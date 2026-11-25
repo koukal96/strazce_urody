@@ -1,0 +1,1232 @@
+/* Page: Home (/) */
+.home {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  background-color: var(--colors-white);
+}
+.home__navigation {
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  transform: translateX(-50%);
+}
+.home__hero-section {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 100vh;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0px;
+  padding: 0px;
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+}
+.home__hero-texts-wrap {
+  display: flex;
+  position: absolute;
+  bottom: 100px;
+  left: 100px;
+  width: fit-content;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__hlidam-vase-pole-z-nebe-abyc {
+  display: block;
+  position: relative;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+  z-index: 1;
+}
+.home__button-primary {
+  display: block;
+  position: relative;
+  width: 175px;
+  flex-shrink: 0;
+  height: auto;
+}
+.home__video {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.home__video-2 {
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.home__about-section {
+  display: flex;
+  position: relative;
+  width: 1440px;
+  flex-shrink: 0;
+  height: auto;
+  max-width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 89px;
+  padding: 100px 100px 100px 100px;
+  overflow: clip;
+}
+.home__about-image-col {
+  display: flex;
+  position: relative;
+  width: 579px;
+  flex-shrink: 0;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__frame {
+  display: block;
+  position: relative;
+  width: 96%;
+  height: 376px;
+  flex-shrink: 0;
+  border-radius: 48px;
+}
+.home__about-texts-col {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 31px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__precizni-zemedelstvi-v-praxi {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__jmenuji-se-jan-koukal-a-spec {
+  display: block;
+  position: relative;
+  width: 88%;
+  height: auto;
+}
+.home__button-about {
+  display: block;
+  position: relative;
+  width: 175px;
+  flex-shrink: 0;
+  height: auto;
+}
+.home__services-section {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 60px;
+  padding: 52px 16px 52px 16px;
+  overflow: clip;
+}
+.home__moje-sluzby {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__slider-wrap {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 720px;
+  flex-shrink: 0;
+}
+.home__clarification-section {
+  display: flex;
+  position: relative;
+  width: 1440px;
+  flex-shrink: 0;
+  height: auto;
+  max-width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 0px 16px 0px 16px;
+  overflow: clip;
+}
+.home__clarification-box-wrap {
+  display: flex;
+  position: relative;
+  width: 91%;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 33px;
+  padding: 54px 60px 54px 60px;
+  overflow: clip;
+  background-color: var(--colors-green);
+  border-radius: 65px;
+}
+.home__jednoduse-srozumitelne-pro-k {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__clarification-cards-wrap {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__clarification-card-wrap {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__clarification-image-col {
+  display: flex;
+  position: relative;
+  width: 126px;
+  flex-shrink: 0;
+  height: 118px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+}
+.home__frame-2 {
+  display: block;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  z-index: 1;
+  border-radius: 0px 0px 0px 0px;
+}
+.home__clarification-texts-col {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__od-ostatnich-me-odlisuje-pra {
+  display: block;
+  position: relative;
+  width: 93%;
+  height: auto;
+}
+.home__clarification-card-wrap-2 {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__clarification-image-col-2 {
+  display: flex;
+  position: relative;
+  width: 126px;
+  flex-shrink: 0;
+  height: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+}
+.home__frame-3 {
+  display: block;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+}
+.home__clarification-texts-col-2 {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__minimalizuji-papirovani-a-na {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.home__examples-section {
+  display: flex;
+  position: relative;
+  width: 1440px;
+  flex-shrink: 0;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 100px;
+  overflow: clip;
+}
+.home__ukazky-ziskanych-informaci {
+  display: block;
+  position: relative;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.home__examples-card-wrap {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__examples-texts-col {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__digitalni-model-terenu-dmt {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__dmt-zobrazuje-vyskovy-profil {
+  display: block;
+  position: relative;
+  width: 86%;
+  height: auto;
+}
+.home__beforeafter {
+  display: block;
+  position: relative;
+  width: 682px;
+  flex-shrink: 0;
+  height: 493px;
+}
+.home__examples-card-wrap-2 {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__beforeafter-2 {
+  display: block;
+  position: relative;
+  width: 682px;
+  flex-shrink: 0;
+  height: 493px;
+}
+.home__examples-texts-col-2 {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__vegetacni-mapa-ndvi {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__mapa-z-multispektralnich-sni {
+  display: block;
+  position: relative;
+  width: 88%;
+  height: auto;
+}
+.home__examples-card-wrap-3 {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__examples-texts-col-3 {
+  display: flex;
+  position: relative;
+  flex: 1 0 0px;
+  width: 1px;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__variabilni-davkovani-vra {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__tato-aplikacni-mapa-ukazuje {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__beforeafter-3 {
+  display: block;
+  position: relative;
+  width: 682px;
+  flex-shrink: 0;
+  height: 493px;
+}
+.home__benefit-video-section {
+  display: flex;
+  position: relative;
+  width: 1440px;
+  flex-shrink: 0;
+  height: 800px;
+  max-width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 0px 16px 0px 16px;
+  overflow: clip;
+}
+.home__benefit-video-texts-wrap {
+  display: flex;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: fit-content;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__z-vysky-k-lepsim-vynosum {
+  display: block;
+  position: relative;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+  z-index: 1;
+}
+.home__video-3 {
+  display: block;
+  position: relative;
+  width: 94%;
+  height: 91%;
+}
+.home__data-section {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  padding: 82px 100px 82px 100px;
+  overflow: clip;
+}
+.home__pomaham-zemedelcum-vyuzit-si {
+  display: block;
+  position: relative;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.home__data-cards-wrap {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px;
+}
+.home__data-card {
+  display: flex;
+  position: relative;
+  width: 397px;
+  flex-shrink: 0;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__frame-4 {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 280px;
+  flex-shrink: 0;
+  border-radius: 35px;
+}
+.home__data-texts-wrap {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__data-ktera-mluvi-za-vase-pol {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__zajistuji-poradenstvi-monito {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__data-card-2 {
+  display: flex;
+  position: relative;
+  width: 397px;
+  flex-shrink: 0;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__frame-5 {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 280px;
+  flex-shrink: 0;
+  border-radius: 35px;
+}
+.home__data-texts-wrap-2 {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__pohled-na-skody-z-vysky {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__na-zaklade-nasbiranych-dat-v {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__data-card-3 {
+  display: flex;
+  position: relative;
+  width: 397px;
+  flex-shrink: 0;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__frame-6 {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 280px;
+  flex-shrink: 0;
+  border-radius: 35px;
+}
+.home__data-texts-wrap-3 {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__3d-modely-a-letecke-zabery {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__mapuji-stavby-vytvarim-3d-mo {
+  display: block;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+}
+.home__frame-7 {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: 400px;
+  flex-shrink: 0;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+}
+.home__embed {
+  display: block;
+  position: relative;
+  width: 740px;
+  flex-shrink: 0;
+  height: 400px;
+}
+.home__cta-section {
+  display: flex;
+  position: relative;
+  width: 1440px;
+  flex-shrink: 0;
+  height: auto;
+  max-width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0px;
+  padding: 37px 16px 37px 16px;
+  overflow: clip;
+}
+.home__cta-box-wrap {
+  display: flex;
+  position: relative;
+  width: 98%;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 45px;
+  padding: 77px 145px 77px 145px;
+  overflow: clip;
+  background-color: var(--colors-green);
+  border-radius: 50px;
+}
+.home__cta-texts-wrap {
+  display: flex;
+  position: relative;
+  align-self: stretch;
+  width: auto;
+  height: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 31px;
+  padding: 0px;
+  overflow: clip;
+}
+.home__pokud-te-zajima-jak-muze-pre {
+  display: block;
+  position: relative;
+  width: 79%;
+  height: auto;
+}
+.home__rad-se-podivam-na-konkretni {
+  display: block;
+  position: relative;
+  width: 53%;
+  height: auto;
+}
+.home__button-cta {
+  display: block;
+  position: relative;
+  width: 260px;
+  flex-shrink: 0;
+  height: auto;
+}
+.home__footer-section {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 67px;
+  flex-shrink: 0;
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1439px) {
+  .home__hero-section {
+    height: 800px;
+    flex-shrink: 0;
+  }
+  .home__hero-texts-wrap {
+    left: 20px;
+    width: 728px;
+  }
+  .home__hlidam-vase-pole-z-nebe-abyc {
+    align-self: stretch;
+    width: auto;
+    white-space: unset;
+  }
+  .home__about-section {
+    align-self: stretch;
+    width: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 60px;
+    padding: 80px 20px 80px 20px;
+    flex-shrink: unset;
+  }
+  .home__about-image-col {
+    width: 728px;
+  }
+  .home__about-texts-col {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__services-section {
+    padding: 80px 20px 80px 20px;
+  }
+  .home__slider-wrap {
+    height: 690px;
+  }
+  .home__clarification-section {
+    align-self: stretch;
+    width: auto;
+    flex-shrink: unset;
+  }
+  .home__clarification-box-wrap {
+    gap: 27px;
+    padding: 54px 20px 54px 20px;
+  }
+  .home__clarification-cards-wrap {
+    flex-direction: column;
+  }
+  .home__clarification-card-wrap {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__clarification-image-col {
+    height: auto;
+  }
+  .home__od-ostatnich-me-odlisuje-pra {
+    width: 100%;
+  }
+  .home__clarification-card-wrap-2 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__examples-section {
+    align-self: stretch;
+    width: auto;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 80px 20px 80px 20px;
+    flex-shrink: unset;
+  }
+  .home__examples-card-wrap {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__examples-texts-col {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__beforeafter {
+    width: 728px;
+    height: auto;
+  }
+  .home__examples-card-wrap-2 {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__beforeafter-2 {
+    width: 728px;
+    height: auto;
+  }
+  .home__examples-texts-col-2 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__examples-card-wrap-3 {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__examples-texts-col-3 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__beforeafter-3 {
+    width: 728px;
+    height: auto;
+  }
+  .home__benefit-video-section {
+    align-self: stretch;
+    width: auto;
+    height: auto;
+    padding: 0px 20px 0px 20px;
+    flex-shrink: unset;
+  }
+  .home__benefit-video-texts-wrap {
+    top: 40px;
+    left: 60px;
+  }
+  .home__data-section {
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 80px 20px 80px 20px;
+  }
+  .home__pomaham-zemedelcum-vyuzit-si {
+    align-self: stretch;
+    width: auto;
+    white-space: unset;
+  }
+  .home__data-cards-wrap {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 60px;
+  }
+  .home__data-card {
+    width: 728px;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__data-card-2 {
+    width: 728px;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__data-card-3 {
+    width: 728px;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .home__frame-7 {
+    height: auto;
+    flex-shrink: unset;
+  }
+  .home__embed {
+    height: 300px;
+  }
+  .home__cta-section {
+    justify-content: flex-start;
+    padding: 37px 20px 37px 20px;
+  }
+  .home__cta-box-wrap {
+    padding: 77px 20px 77px 20px;
+  }
+  .home__button-cta {
+    width: 253px;
+  }
+  .home__footer-section {
+    height: 293px;
+  }
+}
+
+/* Phone */
+@media (max-width: 767px) {
+  .home__hero-section {
+    flex-direction: column;
+  }
+  .home__hero-texts-wrap {
+    right: 16px;
+    bottom: 60px;
+    left: 16px;
+    width: unset;
+  }
+  .home__hlidam-vase-pole-z-nebe-abyc {
+    width: 98%;
+    white-space: unset;
+  }
+  .home__button-primary {
+    width: 51%;
+    flex-shrink: unset;
+  }
+  .home__video {
+    display: none;
+    width: 407%;
+  }
+  .home__video-2 {
+    display: block;
+  }
+  .home__about-section {
+    align-self: stretch;
+    width: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px 16px 40px 16px;
+    flex-shrink: unset;
+  }
+  .home__about-image-col {
+    align-self: stretch;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: unset;
+  }
+  .home__frame {
+    height: 300px;
+  }
+  .home__about-texts-col {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__services-section {
+    gap: 40px;
+    padding: 40px 16px 40px 16px;
+  }
+  .home__slider-wrap {
+    height: 650px;
+  }
+  .home__clarification-section {
+    align-self: stretch;
+    width: auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0px 0px 0px 0px;
+    flex-shrink: unset;
+  }
+  .home__clarification-box-wrap {
+    gap: 12px 80px;
+    padding: 47px 16px 47px 16px;
+    border-radius: 35px;
+  }
+  .home__clarification-cards-wrap {
+    flex-direction: column;
+  }
+  .home__clarification-card-wrap {
+    align-self: stretch;
+    width: auto;
+    flex-direction: column;
+    gap: 0px;
+    flex: unset;
+  }
+  .home__clarification-image-col {
+    align-self: stretch;
+    width: auto;
+    height: auto;
+    justify-content: center;
+    flex-shrink: unset;
+  }
+  .home__frame-2 {
+    display: flex;
+    width: 107px;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0px;
+    padding: 0px 0px 0px 0px;
+    flex: unset;
+    z-index: unset;
+  }
+  .home__clarification-texts-col {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__od-ostatnich-me-odlisuje-pra {
+    flex: 1 0 0px;
+    width: 1px;
+  }
+  .home__clarification-card-wrap-2 {
+    align-self: stretch;
+    width: auto;
+    flex-direction: column;
+    gap: 4px;
+    flex: unset;
+  }
+  .home__frame-3 {
+    z-index: 1;
+  }
+  .home__clarification-texts-col-2 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__minimalizuji-papirovani-a-na {
+    flex: 1 0 0px;
+    width: 1px;
+  }
+  .home__examples-section {
+    align-self: stretch;
+    width: auto;
+    gap: 32px;
+    padding: 86px 16px 86px 16px;
+    flex-shrink: unset;
+  }
+  .home__ukazky-ziskanych-informaci {
+    align-self: stretch;
+    width: auto;
+    white-space: unset;
+  }
+  .home__examples-card-wrap {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .home__examples-texts-col {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__beforeafter {
+    align-self: stretch;
+    width: auto;
+    height: 340px;
+  }
+  .home__examples-card-wrap-2 {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .home__beforeafter-2 {
+    align-self: stretch;
+    width: auto;
+    height: 340px;
+  }
+  .home__examples-texts-col-2 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__examples-card-wrap-3 {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .home__examples-texts-col-3 {
+    align-self: stretch;
+    width: auto;
+    flex: unset;
+  }
+  .home__beforeafter-3 {
+    align-self: stretch;
+    width: auto;
+    height: 340px;
+  }
+  .home__benefit-video-section {
+    align-self: stretch;
+    width: auto;
+    height: auto;
+    flex-direction: column;
+    flex-shrink: unset;
+  }
+  .home__benefit-video-texts-wrap {
+    top: 24px;
+    left: 40px;
+    z-index: 2;
+  }
+  .home__data-section {
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 40px 16px 40px 16px;
+  }
+  .home__pomaham-zemedelcum-vyuzit-si {
+    width: 343px;
+    flex-shrink: 0;
+    white-space: unset;
+  }
+  .home__data-cards-wrap {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .home__data-card {
+    align-self: stretch;
+    width: auto;
+    flex-shrink: unset;
+  }
+  .home__data-card-2 {
+    align-self: stretch;
+    width: auto;
+    flex-shrink: unset;
+  }
+  .home__data-card-3 {
+    align-self: stretch;
+    width: auto;
+    flex-shrink: unset;
+  }
+  .home__frame-7 {
+    height: auto;
+    flex-shrink: unset;
+  }
+  .home__embed {
+    flex: 1 0 0px;
+    width: 1px;
+    height: 200px;
+  }
+  .home__cta-section {
+    flex-direction: column;
+    padding: 58px 0px 58px 0px;
+  }
+  .home__cta-box-wrap {
+    width: 94%;
+    padding: 40px 16px 40px 16px;
+    border-radius: 35px;
+  }
+  .home__pokud-te-zajima-jak-muze-pre {
+    width: 88%;
+  }
+  .home__rad-se-podivam-na-konkretni {
+    width: 87%;
+  }
+  .home__button-cta {
+    width: 226px;
+  }
+  .home__footer-section {
+    height: 315px;
+  }
+}

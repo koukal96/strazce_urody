@@ -1,0 +1,397 @@
+/* Page: Obchodní podmínky (/obchodní-podmínky) */
+.obchodni-podminky {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+  overflow: clip;
+  background-color: var(--colors-white);
+}
+.obchodni-podminky__content-section {
+  display: flex;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 100px 100px 100px 100px;
+  overflow: clip;
+}
+.obchodni-podminky__obchodni-podminky {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__obchodni-podminkyucinne-od-4 {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-2 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__1-uvodni-ustanoveni {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__1-1-tyto-obchodni-podminky-u {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-3 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__2-predmet-smlouvy {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__2-1-predmetem-smlouvy-je-pos {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-4 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__3-cena-a-platebni-podminky {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__3-1-cena-sluzeb-je-vzdy-sjed {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-5 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__4-storno-a-odstoupeni-od-sml {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__4-1-klient-muze-zrusit-zakaz {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-6 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__5-odpovednost {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__5-1-poskytovatel-odpovida-za {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-7 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__6-reklamace {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__6-1-klient-je-povinen-reklam {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-8 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__7-zasilani-obchodnich-sdelen {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__7-1-klient-souhlasi-se-zasil {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-9 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__8-ochrana-osobnich-udaju-a-c {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__8-1-zasady-zpracovani-osobni {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__text-number-wrap-10 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.obchodni-podminky__9-zaverecna-ustanoveni {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.obchodni-podminky__9-1-tyto-obchodni-podminky-j {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.obchodni-podminky__zpet-na-hlavni-stranku {
+  display: block;
+  position: absolute;
+  top: 2734px;
+  left: 185px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1439px) {
+  .obchodni-podminky__obchodni-podminky {
+    width: 100%;
+    white-space: unset;
+  }
+}
+
+/* Phone */
+@media (max-width: 767px) {
+  .obchodni-podminky__content-section {
+    padding: 20px;
+  }
+  .obchodni-podminky__obchodni-podminky {
+    width: 100%;
+    white-space: unset;
+  }
+  .obchodni-podminky__4-storno-a-odstoupeni-od-sml {
+    width: 100%;
+    white-space: unset;
+  }
+  .obchodni-podminky__8-ochrana-osobnich-udaju-a-c {
+    width: 100%;
+    white-space: unset;
+  }
+}

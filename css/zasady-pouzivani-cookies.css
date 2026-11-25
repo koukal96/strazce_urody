@@ -1,0 +1,216 @@
+/* Page: Zásady používání cookies (/zásady-používání-cookies) */
+.zasady-pouzivani-cookies {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0px;
+  padding: 0px;
+  overflow: clip;
+  background-color: var(--colors-white);
+}
+.zasady-pouzivani-cookies__content-section {
+  display: flex;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 100px 100px 100px 100px;
+  overflow: clip;
+}
+.zasady-pouzivani-cookies__zasady-pouzivani-cookies {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.zasady-pouzivani-cookies__text-number-wrap {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.zasady-pouzivani-cookies__cookiesna-tomto-webu-dale-je {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.zasady-pouzivani-cookies__text-number-wrap-2 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.zasady-pouzivani-cookies__1-jake-cookies-pouzivame {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.zasady-pouzivani-cookies__technicke-cookies-nezbytne-p {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.zasady-pouzivani-cookies__text-number-wrap-3 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.zasady-pouzivani-cookies__2-jak-muzete-cookies-ovlivni {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.zasady-pouzivani-cookies__svuj-souhlas-s-pouzivanim-co {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.zasady-pouzivani-cookies__text-number-wrap-4 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.zasady-pouzivani-cookies__3-kdo-cookies-zpracovava {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.zasady-pouzivani-cookies__cookies-jsou-zpracovavany-pr {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.zasady-pouzivani-cookies__text-number-wrap-5 {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 0px 0px 0px 0px;
+  overflow: clip;
+  transform: translateX(-50%) translateY(-50%);
+}
+.zasady-pouzivani-cookies__kontakt {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+}
+.zasady-pouzivani-cookies__mate-li-dotazy-ke-cookies-mu {
+  display: block;
+  position: absolute;
+  top: 154px;
+  left: 781px;
+  width: 100%;
+  height: auto;
+}
+.zasady-pouzivani-cookies__zpet-na-hlavni-stranku {
+  display: block;
+  position: absolute;
+  top: 2734px;
+  left: 185px;
+  width: max-content;
+  white-space: pre;
+  height: auto;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+/* Phone */
+@media (max-width: 767px) {
+  .zasady-pouzivani-cookies__content-section {
+    padding: 20px;
+  }
+  .zasady-pouzivani-cookies__zasady-pouzivani-cookies {
+    width: 100%;
+    white-space: unset;
+  }
+}
