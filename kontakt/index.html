@@ -5774,236 +5774,217 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-<script id="v21-cloudflare-gemini-worker">
-document.addEventListener('DOMContentLoaded', function () {
-  var WORKER_ENDPOINT = "https://strazzce-urody-sova-ai.jan-koukal96.workers.dev";
-  var QUOTA_STORAGE_KEY = "strazce_urody_gemini_user_quota_v21";
-  var DAILY_USER_LIMIT = 12; // Per-visitor 24h limit so no single visitor can exhaust shared quota
-  var DAY_MS = 24 * 60 * 60 * 1000;
-
-  function getUserQuota() {
-    var now = Date.now();
-    var fresh = { count: 0, resetAt: now + DAY_MS };
-    try {
-      var raw = localStorage.getItem(QUOTA_STORAGE_KEY);
-      if (raw) {
-        var parsed = JSON.parse(raw);
-        if (parsed && typeof parsed.resetAt === "number" && now < parsed.resetAt) {
-          return { count: Number(parsed.count) || 0, resetAt: parsed.resetAt };
-        }
-      }
-      localStorage.setItem(QUOTA_STORAGE_KEY, JSON.stringify(fresh));
-    } catch (e) {}
-    return fresh;
+<style id="v25-mobile-tablet-and-owl-polish">
+  /* 1. Responsive Header on Mobile & Tablet (fits Logo + Úvod + O mně + Kontakt cleanly without clipping!) */
+  @media (max-width: 960px) {
+    header.framer-v4s4P {
+      padding: 8px 12px !important;
+      gap: 6px !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      min-height: 58px !important;
+      overflow: visible !important;
+    }
+    header.framer-v4s4P a.framer-usrhoq {
+      width: 118px !important;
+      min-width: 105px !important;
+      height: 34px !important;
+      flex-shrink: 1 !important;
+    }
+    header.framer-v4s4P .framer-1sdlews {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex-shrink: 0 !important;
+      width: auto !important;
+    }
+    header.framer-v4s4P .framer-11xt7wd-container,
+    header.framer-v4s4P .framer-19b8q3-container {
+      width: auto !important;
+      min-width: auto !important;
+      height: 32px !important;
+    }
+    header.framer-v4s4P .framer-11xt7wd-container a,
+    header.framer-v4s4P .framer-19b8q3-container a {
+      padding: 0 4px !important;
+      width: auto !important;
+    }
+    header.framer-v4s4P .framer-11xt7wd-container p,
+    header.framer-v4s4P .framer-19b8q3-container p {
+      font-size: 13.5px !important;
+      white-space: nowrap !important;
+    }
+    header.framer-v4s4P .framer-11xt7wd-container .framer-1blsga1,
+    header.framer-v4s4P .framer-19b8q3-container .framer-1blsga1 {
+      position: static !important;
+      transform: none !important;
+      display: flex !important;
+      align-items: center !important;
+      height: 100% !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container {
+      width: auto !important;
+      min-width: 82px !important;
+      height: 34px !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container a {
+      padding: 0 13px !important;
+      width: auto !important;
+      height: 34px !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container p {
+      font-size: 13px !important;
+      white-space: nowrap !important;
+    }
   }
 
-  function incrementUserQuota() {
-    var q = getUserQuota();
-    q.count += 1;
-    try { localStorage.setItem(QUOTA_STORAGE_KEY, JSON.stringify(q)); } catch (e) {}
-    return q;
+  @media (max-width: 420px) {
+    header.framer-v4s4P a.framer-usrhoq {
+      width: 102px !important;
+      min-width: 96px !important;
+    }
+    header.framer-v4s4P .framer-1sdlews {
+      gap: 6px !important;
+    }
+    header.framer-v4s4P .framer-11xt7wd-container p,
+    header.framer-v4s4P .framer-19b8q3-container p {
+      font-size: 12.5px !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container {
+      min-width: 74px !important;
+      height: 31px !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container a {
+      padding: 0 10px !important;
+      height: 31px !important;
+    }
+    header.framer-v4s4P .framer-9r131v-container p {
+      font-size: 12px !important;
+    }
   }
 
-  // Replace the submission handler on #ai-chat-bar so it calls the Cloudflare Gemini Worker first,
-  // enforces a per-visitor renewable 24h quota, and falls back smoothly to the local Owl AI if offline/rate-limited/error.
-  setTimeout(function () {
-    var barForm = document.getElementById("ai-chat-bar");
-    var bodyEl = document.getElementById("ai-chat-body");
-    if (!barForm || !bodyEl) return;
-
-    var field = barForm.querySelector("input");
-    if (!field) return;
-
-    // Clone form to detach previous v19 submit listener cleanly
-    var cleanForm = barForm.cloneNode(true);
-    barForm.parentNode.replaceChild(cleanForm, barForm);
-    var cleanField = cleanForm.querySelector("input");
-
-    function norm(str) {
-      return (str || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  /* 2. Mobile & Tablet Hero Typography + Carousel + Floating Buttons */
+  @media (max-width: 768px) {
+    section.framer-1138g77 h1.framer-text {
+      font-size: clamp(28px, 7.6vw, 42px) !important;
+      line-height: 1.12 !important;
+      padding-right: 14px !important;
     }
-    function hasAny(normStr, arr) {
-      for (var i = 0; i < arr.length; i++) {
-        if (normStr.indexOf(arr[i]) !== -1) return true;
-      }
-      return false;
+    .floating-actions-wrap {
+      right: 14px !important;
+      bottom: 84px !important;
+      gap: 10px !important;
     }
-
-    function appendUser(text) {
-      var m = document.createElement("div");
-      m.className = "ai-bubble-msg user";
-      m.textContent = text;
-      bodyEl.appendChild(m);
-      bodyEl.scrollTop = bodyEl.scrollHeight;
+    .ai-chat-bubble {
+      width: 56px !important;
+      height: 56px !important;
     }
-
-    function appendBot(text, followText, jumps) {
-      var m = document.createElement("div");
-      m.className = "ai-bubble-msg bot";
-      m.textContent = text;
-      if (jumps && jumps.length) {
-        var row = document.createElement("div");
-        row.className = "ai-actions-row";
-        jumps.forEach(function (j) {
-          var b = document.createElement("button");
-          b.type = "button";
-          b.className = "ai-jump-link" + (j.wa ? " is-wa" : "") + (j.is3d ? " is-3d" : "");
-          b.textContent = j.label;
-          b.addEventListener("click", function () {
-            if (j.href) {
-              if (j.external) window.open(j.href, "_blank", "noopener,noreferrer");
-              else window.location.href = j.href;
-            } else if (j.scrollSelector) {
-              var el = document.querySelector(j.scrollSelector);
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              else window.location.href = "../index.html" + j.scrollSelector;
-            }
-          });
-          row.appendChild(b);
-        });
-        m.appendChild(row);
-      }
-      if (followText) {
-        var fu = document.createElement("div");
-        fu.className = "ai-followup-note";
-        fu.textContent = followText;
-        m.appendChild(fu);
-      }
-      bodyEl.appendChild(m);
-      bodyEl.scrollTop = bodyEl.scrollHeight;
+    .wa-phone-bubble {
+      width: 50px !important;
+      height: 50px !important;
     }
-
-    function buildContextualJumps(queryText) {
-      var q = norm(queryText);
-      var isSub = /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.pathname) || /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.href);
-      var prefix = isSub ? "../" : "";
-      var jumps = [];
-      if (hasAny(q, ["3d", "model", "fotogram", "kubatur", "lidar", "pix4d"])) {
-        jumps.push({ label: "Ukázky 3D modelů", href: "https://koukal96.github.io/3D/", external: true, is3d: true });
-      }
-      if (hasAny(q, ["o mne", "o me", "koukal", "praxe", "vzdel", "sluzb", "ndvi", "vra", "dmt", "termoviz"])) {
-        jumps.push({ label: "O mně", href: prefix + "o-mne/index.html" });
-        jumps.push({ label: "Moje služby", scrollSelector: "#mojesluzby" });
-      }
-      jumps.push({ label: "Kontakt & přílohy", href: prefix + "kontakt/index.html" });
-      jumps.push({ label: "WhatsApp", href: "https://wa.me/420604353393", external: true, wa: true });
-      return jumps.slice(0, 3);
+    .ai-chat-window {
+      left: 10px !important;
+      right: 10px !important;
+      bottom: 152px !important;
+      width: auto !important;
+      max-height: calc(100dvh - 170px) !important;
+      border-radius: 24px !important;
     }
-
-    function localFallbackReply(raw) {
-      var q = norm(raw);
-      if (hasAny(q, ["jak se mas", "jak se mate", "jak se dari", "jak jde zivot", "jak to jde"])) {
-        return "Júú, zdravím! Mám se skvěle – hlídám pole a data z dronů a těším se, co dnes vymyslíme. Pojďme se pobavit na téma, které tě zajímá (kubatury, 3D modely, fotogrammetrie, termovize, NDVI/VRA, škody pro SZIF/pojišťovny nebo kde co najdeš na webu).";
-      }
-      if (hasAny(q, ["lidar"])) {
-        return "Klasický letecký LiDAR teď neprovozuji, ale u většiny zadání (kubatury, DMT terén, 3D modely staveb) to dokážeme řešit fotogrammetrií v PIX4D. Můžeme se domluvit na nejvhodnějším postupu s lidským kolegou Bc. Janem Koukalem (+420 604 353 393).";
-      }
-      if (hasAny(q, ["3d", "model", "fotogram", "kubatur"])) {
-        return "Fotogrammetrii, kubatury i 3D modely staveb a terénu dělám (PIX4D, kategorie A2). Živé ukázky 3D modelů najdeš na koukal96.github.io/3D/ a přiložením snímku z katastru usnadníš nacenění i návrh letu.";
-      }
-      if (hasAny(q, ["termoviz", "zavlah"])) {
-        return "Termovizi provozuji – termokamerou z dronu odhaluji nerovnoměrné zavlažování, ucpané trysky nebo úniky vody v závlahách i anomálie objektů. Přilož snímek rozsahu a domluvíme postup.";
-      }
-      return "Rozumím! Pro přesnější domluvu na míru se můžeš rovnou spojit s mým lidským kolegou Bc. Janem Koukalem (+420 604 353 393, info@strazce-urody.cz), přiložit fotku/katastr z chatu nebo přenést rozhovor do poptávkového formuláře.";
+    .ai-chat-body {
+      max-height: calc(100dvh - 345px) !important;
+      padding: 12px !important;
     }
+  }
 
-    function persistMessage(role, text, jumps, follow) {
-      try {
-        var key = "strazce_urody_owl_chat_v20";
-        var raw = sessionStorage.getItem(key) || localStorage.getItem(key) || "{}";
-        var st = JSON.parse(raw);
-        if (!Array.isArray(st.messages)) st.messages = [];
-        st.messages.push({ role: role, text: text, jumps: jumps || [], follow: follow || "" });
-        st.chatOpen = true;
-        var s = JSON.stringify(st);
-        sessionStorage.setItem(key, s);
-        localStorage.setItem(key, s);
-        sessionStorage.setItem("strazce_urody_owl_chat_v19", s);
-        localStorage.setItem("strazce_urody_owl_chat_v19", s);
-      } catch (e) {}
-    }
+  /* 3. Fix native file input completely hidden off-screen so iOS Safari NEVER draws "Vybrat soubory" over text! */
+  #kontakt-real-file-input,
+  #ai-chat-file-input {
+    position: fixed !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+</style>
 
-    cleanForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      var text = (cleanField.value || "").trim();
-      if (!text) return;
-      cleanField.value = "";
-
-      appendUser(text);
-      persistMessage("user", text, [], "");
-
-      var typing = document.createElement("div");
-      typing.className = "ai-typing";
-      typing.textContent = "Sovička přemýšlí...";
-      bodyEl.appendChild(typing);
-      bodyEl.scrollTop = bodyEl.scrollHeight;
-
-      var quota = getUserQuota();
-      var jumps = buildContextualJumps(text);
-
-      // If this visitor already used their personal 24h AI quota, fall back cleanly without spending extra API calls
-      if (quota.count >= DAILY_USER_LIMIT) {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        var limitMsg = localFallbackReply(text);
-        var limitFollow = "Dosáhl jsi osobního limitu " + DAILY_USER_LIMIT + " AI dotazů na 24 h (obnoví se automaticky). Můžeš dál přiložit fotku/katastr nebo napsat Janovi.";
-        appendBot(limitMsg, limitFollow, jumps);
-        persistMessage("bot", limitMsg, jumps, limitFollow);
-        return;
-      }
-
-      // Collect recent history for Gemini Worker
-      var historyPayload = [];
-      try {
-        var key = "strazce_urody_owl_chat_v20";
-        var raw = sessionStorage.getItem(key) || localStorage.getItem(key);
-        if (raw) {
-          var st = JSON.parse(raw);
-          if (Array.isArray(st.messages)) {
-            historyPayload = st.messages.slice(-8).map(function (m) {
-              return {
-                role: m.role === "user" ? "user" : "model",
-                text: String(m.text || "").slice(0, 900)
-              };
-            });
-          }
-        }
-      } catch (e) {}
-
-      try {
-        var res = await fetch(WORKER_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, history: historyPayload })
-        });
-        var data = await res.json();
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-
-        if (res.ok && data && typeof data.reply === "string" && data.reply.trim()) {
-          incrementUserQuota();
-          var botReply = data.reply.trim();
-          appendBot(botReply, "", jumps);
-          persistMessage("bot", botReply, jumps, "");
-          return;
-        }
-        throw new Error(data && data.error ? data.error : "Worker response error");
-      } catch (err) {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        var fb = localFallbackReply(text);
-        appendBot(fb, "", jumps);
-        persistMessage("bot", fb, jumps, "");
-      }
-    });
-  }, 520);
-});
-</script>
-
-
-<script id="v23-clean-gemini-first">
+<script id="v25-unified-owl-engine">
 document.addEventListener("DOMContentLoaded", function () {
   var WORKER_ENDPOINT = "https://strazzce-urody-sova-ai.jan-koukal96.workers.dev";
-  var QUOTA_KEY = "strazce_urody_gemini_quota_v23";
-  var DAILY_LIMIT = 15;
+  var STATE_KEY = "strazce_urody_owl_master_v25";
+  var QUOTA_KEY = "strazce_urody_gemini_quota_v25";
+  var DAILY_LIMIT = 20;
   var DAY_MS = 24 * 60 * 60 * 1000;
+  var MODELS_3D_URL = "https://koukal96.github.io/3D/";
+
+  var isSubpage = /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.pathname) || /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.href);
+  var rootRel = isSubpage ? "../" : "";
+
+  // Ensure hero & inline videos play smoothly on mobile Safari without showing big play overlay when allowed
+  document.querySelectorAll("video").forEach(function (v) {
+    v.muted = true;
+    v.setAttribute("muted", "");
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+    var p = v.play();
+    if (p && typeof p.catch === "function") p.catch(function () {});
+  });
+
+  function readState() {
+    var def = {
+      messages: [],
+      attachments: [],
+      chatOpen: false,
+      attachedToForm: false,
+      topic: null,
+      crop: null,
+      hectares: null,
+      location: null,
+      usedVariants: [],
+      summaryText: ""
+    };
+    try {
+      var raw = sessionStorage.getItem(STATE_KEY) || localStorage.getItem(STATE_KEY);
+      if (raw) {
+        var p = JSON.parse(raw);
+        if (p && typeof p === "object") {
+          return Object.assign(def, p);
+        }
+      }
+    } catch (e) {}
+    return def;
+  }
+
+  function buildSummary(st) {
+    var lines = [];
+    lines.push("=== ZÁPIS Z KONVERZACE · STRÁŽCE ÚRODY AI (SOVIČKA) ===");
+    if (st.topic) lines.push("Téma / služba: " + st.topic);
+    if (st.crop) lines.push("Plodina / objekt: " + st.crop);
+    if (st.hectares) lines.push("Výměra / rozsah: " + st.hectares);
+    if (st.location) lines.push("Lokalita: " + st.location);
+    if (st.attachments && st.attachments.length) {
+      lines.push("Přiložené snímky / katastr (" + st.attachments.length + "): " + st.attachments.map(function (a) { return a.name; }).join(", "));
+    }
+    lines.push("");
+    lines.push("Přepis rozhovoru:");
+    (st.messages || []).forEach(function (m) {
+      if (m.role === "user") lines.push("• Zákazník: " + m.text);
+      else if (m.role === "bot") lines.push("• Sovička AI: " + m.text);
+    });
+    return lines.join("\n");
+  }
+
+  function writeState(st) {
+    st.summaryText = buildSummary(st);
+    try {
+      var serialized = JSON.stringify(st);
+      sessionStorage.setItem(STATE_KEY, serialized);
+      localStorage.setItem(STATE_KEY, serialized);
+    } catch (e) {}
+  }
 
   function readQuota() {
     var now = Date.now();
@@ -6028,155 +6009,728 @@ document.addEventListener("DOMContentLoaded", function () {
     return q;
   }
 
+  function dataUrlToFile(dataUrl, filename) {
+    try {
+      var parts = dataUrl.split(",");
+      var mime = parts[0].match(/:(.*?);/)[1];
+      var bin = atob(parts[1]);
+      var len = bin.length;
+      var arr = new Uint8Array(len);
+      while (len--) arr[len] = bin.charCodeAt(len);
+      return new File([arr], filename, { type: mime });
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Sync Kontakt page attachment controls with v25 state
+  function setupKontaktFormSync() {
+    var form = document.querySelector("form.framer-c118r5");
+    if (!form) return;
+
+    var oldBox = form.querySelector(".kontakt-attachment-box");
+    if (oldBox) oldBox.remove();
+    var oldBadge = form.querySelector(".ai-attached-badge");
+    if (oldBadge) oldBadge.remove();
+
+    var st = readState();
+    var userFiles = [];
+    var chatTxtFile = null;
+
+    var box = document.createElement("div");
+    box.className = "kontakt-attachment-box";
+    box.innerHTML =
+      '<div class="kontakt-attachment-row">' +
+        '<div>' +
+          '<strong style="color:#eaee56;font-size:13.5px;">Přílohy k poptávce (foto, katastr nebo přepis chatu)</strong>' +
+          '<div style="font-size:12px;opacity:0.92;">Přiložte snímky plochy či stavby i exportovaný rozhovor ze Sovičky.</div>' +
+        '</div>' +
+        '<button type="button" class="kontakt-file-trigger-btn" id="kontakt-add-file-btn">+ Přidat přílohu</button>' +
+      '</div>' +
+      '<input type="file" id="kontakt-real-file-input" name="attachment" accept="image/*,.pdf,.kml,.kmz,.txt,.zip" multiple>' +
+      '<div id="kontakt-chat-export-slot"></div>' +
+      '<div class="kontakt-preview-grid" id="kontakt-files-list"></div>';
+
+    var submitWrap = form.querySelector(".framer-dj3zm1-container");
+    if (submitWrap) submitWrap.insertAdjacentElement("beforebegin", box);
+    else form.appendChild(box);
+
+    var addBtn = document.getElementById("kontakt-add-file-btn");
+    var realInput = document.getElementById("kontakt-real-file-input");
+    var exportSlot = document.getElementById("kontakt-chat-export-slot");
+    var filesList = document.getElementById("kontakt-files-list");
+
+    function rebuildFiles() {
+      if (!realInput || typeof DataTransfer === "undefined") return;
+      try {
+        var dt = new DataTransfer();
+        if (chatTxtFile) dt.items.add(chatTxtFile);
+        userFiles.forEach(function (it) {
+          if (it.fileObj) dt.items.add(it.fileObj);
+          else if (it.dataUrl) {
+            var f = dataUrlToFile(it.dataUrl, it.name);
+            if (f) dt.items.add(f);
+          }
+        });
+        realInput.files = dt.files;
+      } catch (e) {}
+    }
+
+    function renderFormFiles() {
+      rebuildFiles();
+      if (exportSlot) {
+        exportSlot.innerHTML = "";
+        if (chatTxtFile && st.summaryText) {
+          var r = document.createElement("div");
+          r.className = "kontakt-chat-file-row";
+          r.innerHTML =
+            '<span><strong>Příloha z chatu:</strong> prepis-chatu-strazce-urody.txt</span>' +
+            '<span style="display:flex;gap:10px;align-items:center;">' +
+              '<button type="button" class="kontakt-download-link" id="kontakt-dl-chat-btn">Stáhnout .txt</button>' +
+              '<button type="button" class="kontakt-download-link" id="kontakt-rm-chat-btn">Odebrat</button>' +
+            '</span>';
+          exportSlot.appendChild(r);
+          document.getElementById("kontakt-dl-chat-btn").addEventListener("click", function () {
+            var blob = new Blob([st.summaryText], { type: "text/plain;charset=utf-8" });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement("a");
+            a.href = url;
+            a.download = "prepis-chatu-strazce-urody.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+          });
+          document.getElementById("kontakt-rm-chat-btn").addEventListener("click", function () {
+            chatTxtFile = null;
+            st.attachedToForm = false;
+            writeState(st);
+            renderFormFiles();
+          });
+        }
+      }
+      if (filesList) {
+        filesList.innerHTML = "";
+        userFiles.forEach(function (it, idx) {
+          var chip = document.createElement("div");
+          chip.className = "kontakt-file-chip";
+          if (it.dataUrl) {
+            var im = document.createElement("img");
+            im.src = it.dataUrl;
+            im.alt = it.name;
+            chip.appendChild(im);
+          }
+          var sp = document.createElement("span");
+          sp.textContent = it.name;
+          chip.appendChild(sp);
+          var rm = document.createElement("button");
+          rm.type = "button";
+          rm.textContent = "×";
+          rm.addEventListener("click", function () {
+            userFiles.splice(idx, 1);
+            renderFormFiles();
+          });
+          chip.appendChild(rm);
+          filesList.appendChild(chip);
+        });
+      }
+    }
+
+    if (addBtn && realInput) {
+      addBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        realInput.click();
+      });
+      realInput.addEventListener("change", function () {
+        Array.from(realInput.files || []).forEach(function (f) {
+          if (f.name === "prepis-chatu-strazce-urody.txt") return;
+          var entry = { name: f.name, dataUrl: null, fileObj: f };
+          if (f.type && f.type.startsWith("image/")) {
+            var rd = new FileReader();
+            rd.onload = function (ev) {
+              entry.dataUrl = ev.target.result;
+              renderFormFiles();
+            };
+            rd.readAsDataURL(f);
+          }
+          userFiles.push(entry);
+        });
+        renderFormFiles();
+      });
+    }
+
+    if (st.attachedToForm && st.summaryText) {
+      try {
+        chatTxtFile = new File([st.summaryText], "prepis-chatu-strazce-urody.txt", { type: "text/plain;charset=utf-8" });
+      } catch (e) {}
+      var ta = form.querySelector('textarea[name="Zprava"], textarea[name="Text Area"]');
+      if (ta) {
+        ta.value = st.summaryText;
+        ta.style.minHeight = "210px";
+      }
+      if (Array.isArray(st.attachments)) {
+        st.attachments.forEach(function (a) {
+          userFiles.push({
+            name: a.name,
+            dataUrl: a.dataUrl || null,
+            fileObj: a.dataUrl ? dataUrlToFile(a.dataUrl, a.name) : null
+          });
+        });
+      }
+      var badge = document.createElement("div");
+      badge.className = "ai-attached-badge";
+      badge.innerHTML =
+        '<div><strong>Přiložen chat z AI Sovičky (export .txt + text zprávy)</strong><br>Přepis rozhovoru je připravený jako příloha i v textu poptávky.</div>' +
+        '<button type="button" class="ai-attached-remove">Odebrat</button>';
+      badge.querySelector(".ai-attached-remove").addEventListener("click", function () {
+        badge.remove();
+        chatTxtFile = null;
+        st.attachedToForm = false;
+        writeState(st);
+        renderFormFiles();
+      });
+      var titleEl = form.querySelector(".framer-1oivi31");
+      if (titleEl && titleEl.parentNode) titleEl.insertAdjacentElement("afterend", badge);
+      else form.prepend(badge);
+    }
+
+    renderFormFiles();
+  }
+  setupKontaktFormSync();
+
+  // Mount ONE clean, authoritative AI Owl widget after earlier DOMContentLoaded hooks settle
   setTimeout(function () {
+    var oldWrap = document.getElementById("strazce-floating-widgets");
+    if (oldWrap) oldWrap.remove();
+
+    var owlSvg =
+      '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M5 4.5 8 7c1.2-.6 2.6-.9 4-.9s2.8.3 4 .9l3-2.5-.7 4.2c1.1 1.6 1.7 3.5 1.7 5.6 0 4.5-3.6 7.7-8 7.7s-8-3.2-8-7.7c0-2.1.6-4 1.7-5.6L5 4.5Z"/>' +
+        '<circle cx="9.2" cy="12" r="2.2"/>' +
+        '<circle cx="14.8" cy="12" r="2.2"/>' +
+        '<circle cx="9.2" cy="12" r="0.7" fill="currentColor"/>' +
+        '<circle cx="14.8" cy="12" r="0.7" fill="currentColor"/>' +
+        '<path d="m12 13.8-1.3 2h2.6l-1.3-2Z"/>' +
+        '<path d="M8.5 18.5c1 .7 2.2 1 3.5 1s2.5-.3 3.5-1"/>' +
+      '</svg>';
+
+    var waSvg =
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>' +
+      '</svg>';
+
+    var wrap = document.createElement("div");
+    wrap.className = "floating-actions-wrap";
+    wrap.id = "strazce-floating-widgets";
+    wrap.innerHTML =
+      '<div class="ai-chat-window" id="ai-chat-window" role="dialog" aria-label="Strážce úrody AI – Sovička">' +
+        '<div class="ai-chat-top">' +
+          '<div class="ai-owl-badge">' +
+            '<div class="ai-owl-avatar">' + owlSvg + '</div>' +
+            '<div>' +
+              '<strong>Strážce úrody AI · Sovička</strong>' +
+              '<span>Povídejme si · Drony, data &amp; 3D modely</span>' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" class="ai-chat-x" id="ai-chat-x" aria-label="Zavřít">×</button>' +
+        '</div>' +
+        '<div class="ai-toolbar">' +
+          '<button type="button" class="ai-tool-btn is-primary" id="ai-attach-form-btn" title="Exportuje rozhovor (i po 1. větě) do přílohy poptávkového formuláře">Přiložit k formuláři</button>' +
+          '<button type="button" class="ai-tool-btn" id="ai-send-mail-btn" title="Otevře odeslání rozhovoru na info@strazce-urody.cz">Poslat mailem</button>' +
+          '<button type="button" class="ai-tool-btn" id="ai-reset-chat-btn" title="Začít nový rozhovor">Nový chat</button>' +
+        '</div>' +
+        '<div class="ai-chat-body" id="ai-chat-body"></div>' +
+        '<div class="ai-attach-strip">' +
+          '<button type="button" class="ai-file-trigger" id="ai-chat-upload-btn">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>' +
+            '<span>Přiložit foto / katastr</span>' +
+          '</button>' +
+          '<input type="file" id="ai-chat-file-input" accept="image/*,.pdf,.kml,.kmz" multiple>' +
+          '<span style="font-size:11px;color:#4f664f;">Přilož mapu plochy pro přesnější nacenění</span>' +
+          '<div class="ai-attached-files-list" id="ai-attached-files-list"></div>' +
+        '</div>' +
+        '<form class="ai-chat-bar" id="ai-chat-bar">' +
+          '<input type="text" class="ai-chat-field" id="ai-chat-field" placeholder="Napiš cokoliv (ahoj, kubatury, 3D modely, O mně)..." autocomplete="off">' +
+          '<button type="submit" class="ai-chat-go">Poslat</button>' +
+        '</form>' +
+      '</div>' +
+      '<button type="button" class="ai-chat-bubble" id="ai-chat-bubble" aria-expanded="false" aria-controls="ai-chat-window" aria-label="Otevřít AI Sovičku">' +
+        owlSvg +
+        '<span>SOVA AI</span>' +
+      '</button>' +
+      '<a class="wa-phone-bubble" href="https://wa.me/420604353393?text=Dobr%C3%BD%20den%2C%20oz%C3%BDv%C3%A1m%20se%20ohledn%C4%9B%20slu%C5%BEeb%20Str%C3%A1%C5%BEce%20%C3%BArody." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp telefon">' +
+        waSvg +
+      '</a>';
+
+    document.body.appendChild(wrap);
+
+    var openBtn = document.getElementById("ai-chat-bubble");
+    var closeBtn = document.getElementById("ai-chat-x");
+    var winEl = document.getElementById("ai-chat-window");
     var bodyEl = document.getElementById("ai-chat-body");
     var barForm = document.getElementById("ai-chat-bar");
-    if (!bodyEl || !barForm) return;
+    var inputEl = document.getElementById("ai-chat-field");
+    var attachBtn = document.getElementById("ai-attach-form-btn");
+    var mailBtn = document.getElementById("ai-send-mail-btn");
+    var resetBtn = document.getElementById("ai-reset-chat-btn");
+    var uploadBtn = document.getElementById("ai-chat-upload-btn");
+    var fileInput = document.getElementById("ai-chat-file-input");
+    var filesListEl = document.getElementById("ai-attached-files-list");
 
-    // Clean any stuck "Sovička přemýšlí..." nodes
-    bodyEl.querySelectorAll(".ai-typing").forEach(function (el) { el.remove(); });
+    var state = readState();
 
-    // Clone form to remove all prior conflicting submit listeners (v19 & v21)
-    var freshForm = barForm.cloneNode(true);
-    barForm.parentNode.replaceChild(freshForm, barForm);
-    var inputEl = freshForm.querySelector("input");
-    if (!inputEl) return;
+    function setOpen(openFlag) {
+      state.chatOpen = !!openFlag;
+      writeState(state);
+      if (state.chatOpen) {
+        winEl.classList.add("is-open");
+        openBtn.setAttribute("aria-expanded", "true");
+        setTimeout(function () { inputEl.focus(); }, 40);
+      } else {
+        winEl.classList.remove("is-open");
+        openBtn.setAttribute("aria-expanded", "false");
+      }
+    }
 
-    var isSub = /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.pathname) || /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.href);
-    var prefix = isSub ? "../" : "";
+    // Keep chat open if it was open before page transition, and ALWAYS keep full history across close/reopen/navigation
+    if (state.chatOpen) {
+      winEl.classList.add("is-open");
+      openBtn.setAttribute("aria-expanded", "true");
+    }
+
+    openBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      setOpen(!winEl.classList.contains("is-open"));
+    });
+    closeBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      // Closing minimizes window ONLY; history stays preserved in storage!
+      setOpen(false);
+    });
 
     function norm(s) {
       return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
-
-    function appendUserBubble(txt) {
-      var d = document.createElement("div");
-      d.className = "ai-bubble-msg user";
-      d.textContent = txt;
-      bodyEl.appendChild(d);
-      bodyEl.scrollTop = bodyEl.scrollHeight;
+    function hasAny(q, arr) {
+      for (var i = 0; i < arr.length; i++) {
+        if (q.indexOf(arr[i]) !== -1) return true;
+      }
+      return false;
     }
 
-    function appendBotBubble(txt, extraNote, actions) {
-      var d = document.createElement("div");
-      d.className = "ai-bubble-msg bot";
-      d.textContent = txt;
+    // Navigate within site WITHOUT closing chat and WITH full history preserved
+    function navigatePreservingChat(target) {
+      if (!target) return;
+      state.chatOpen = true;
+      writeState(state);
 
-      if (actions && actions.length) {
+      if (target.indexOf("http") === 0) {
+        window.open(target, "_blank", "noopener,noreferrer");
+        return;
+      }
+      if (target.indexOf("#") === 0) {
+        var el = document.querySelector(target);
+        if (el) {
+          // Stay open! Smooth-scroll page behind/beside open chat window
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        window.location.href = rootRel + "index.html" + target;
+        return;
+      }
+      window.location.href = rootRel + target;
+    }
+
+    function renderFilePills() {
+      filesListEl.innerHTML = "";
+      (state.attachments || []).forEach(function (att, idx) {
+        var pill = document.createElement("span");
+        pill.className = "ai-file-pill";
+        pill.textContent = att.name;
+        var del = document.createElement("button");
+        del.type = "button";
+        del.textContent = "×";
+        del.addEventListener("click", function () {
+          state.attachments.splice(idx, 1);
+          writeState(state);
+          renderFilePills();
+        });
+        pill.appendChild(del);
+        filesListEl.appendChild(pill);
+      });
+    }
+
+    function renderBubble(msgObj) {
+      var div = document.createElement("div");
+      div.className = "ai-bubble-msg " + (msgObj.role === "user" ? "user" : "bot");
+      div.textContent = msgObj.text;
+
+      if (msgObj.imagePreview) {
+        var img = document.createElement("img");
+        img.src = msgObj.imagePreview;
+        img.alt = msgObj.imageName || "Příloha";
+        img.className = "ai-msg-thumb";
+        div.appendChild(img);
+      }
+
+      if (msgObj.summaryCard) {
+        var card = document.createElement("div");
+        card.className = "ai-summary-card";
+        card.innerHTML = "<strong>Exportovaný podklad do formuláře:</strong><pre></pre>";
+        card.querySelector("pre").textContent = msgObj.summaryCard;
+        div.appendChild(card);
+      }
+
+      if (msgObj.jumps && msgObj.jumps.length) {
         var row = document.createElement("div");
         row.className = "ai-actions-row";
-        actions.forEach(function (act) {
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "ai-jump-link" + (act.wa ? " is-wa" : "") + (act.is3d ? " is-3d" : "");
-          btn.textContent = act.label;
-          btn.addEventListener("click", function () {
-            if (act.external) window.open(act.href, "_blank", "noopener,noreferrer");
-            else if (act.href) window.location.href = act.href;
-            else if (act.scrollTo) {
-              var targetEl = document.querySelector(act.scrollTo);
-              if (targetEl) targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-              else window.location.href = prefix + "index.html" + act.scrollTo;
-            }
+        msgObj.jumps.forEach(function (j) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "ai-jump-link" + (j.wa ? " is-wa" : "") + (j.is3d ? " is-3d" : "");
+          b.textContent = j.label;
+          b.addEventListener("click", function () {
+            if (j.action === "attach") exportToContactForm();
+            else if (j.action === "email") exportToEmail();
+            else if (j.action === "upload") fileInput.click();
+            else navigatePreservingChat(j.target);
           });
-          row.appendChild(btn);
+          row.appendChild(b);
         });
-        d.appendChild(row);
+        div.appendChild(row);
       }
 
-      if (extraNote) {
-        var fn = document.createElement("div");
-        fn.className = "ai-followup-note";
-        fn.textContent = extraNote;
-        d.appendChild(fn);
+      if (msgObj.follow) {
+        var fu = document.createElement("div");
+        fu.className = "ai-followup-note";
+        fu.textContent = msgObj.follow;
+        div.appendChild(fu);
       }
 
-      bodyEl.appendChild(d);
+      bodyEl.appendChild(div);
       bodyEl.scrollTop = bodyEl.scrollHeight;
     }
 
-    function saveHistoryEntry(role, txt) {
-      try {
-        var key = "strazce_urody_owl_chat_v20";
-        var raw = sessionStorage.getItem(key) || localStorage.getItem(key) || "{}";
-        var st = JSON.parse(raw);
-        if (!Array.isArray(st.messages)) st.messages = [];
-        st.messages.push({ role: role, text: txt });
-        st.chatOpen = true;
-        var s = JSON.stringify(st);
-        sessionStorage.setItem(key, s);
-        localStorage.setItem(key, s);
-      } catch (e) {}
+    function exportToContactForm() {
+      // Works even after the very 1st user sentence!
+      if (!state.messages || !state.messages.length) {
+        state.messages = [{ role: "bot", text: "Zákazník otevírá poptávkový formulář z AI Sovičky." }];
+      }
+      state.attachedToForm = true;
+      state.chatOpen = true;
+      writeState(state);
+
+      var onKontakt = /\/kontakt\//.test(window.location.pathname) || /\/kontakt\//.test(window.location.href);
+      if (onKontakt) {
+        setupKontaktFormSync();
+        var fEl = document.querySelector("form.framer-c118r5");
+        if (fEl) fEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        var conf = {
+          role: "bot",
+          text: "Hotovo! Přepis rozhovoru (soubor prepis-chatu-strazce-urody.txt i text zprávy) jsem vložil přímo do formuláře na této stránce."
+        };
+        state.messages.push(conf);
+        writeState(state);
+        renderBubble(conf);
+        return;
+      }
+
+      var b = {
+        role: "bot",
+        text: "Připravil jsem export rozhovoru jako přílohu k formuláři. Přecházím na stránku Kontakt – chat i historie zůstanou otevřené.",
+        summaryCard: state.summaryText
+      };
+      state.messages.push(b);
+      writeState(state);
+      renderBubble(b);
+      setTimeout(function () {
+        window.location.href = rootRel + "kontakt/index.html";
+      }, 550);
     }
 
-    function getRecentHistory() {
-      try {
-        var key = "strazce_urody_owl_chat_v20";
-        var raw = sessionStorage.getItem(key) || localStorage.getItem(key);
-        if (raw) {
-          var st = JSON.parse(raw);
-          if (Array.isArray(st.messages)) {
-            return st.messages.slice(-8).map(function (m) {
-              return {
-                role: m.role === "user" ? "user" : "model",
-                text: String(m.text || "").slice(0, 900)
-              };
-            });
-          }
+    function exportToEmail() {
+      writeState(state);
+      var subj = encodeURIComponent("Poptávka z AI Sovičky – Strážce úrody");
+      var body = encodeURIComponent(
+        "Dobrý den pane Koukale,\n\nposílám přepis rozhovoru z AI Sovičky:\n\n" +
+        state.summaryText +
+        "\n\nDěkuji."
+      );
+      window.location.href = "mailto:info@strazce-urody.cz?subject=" + subj + "&body=" + body;
+    }
+
+    function pickVariant(key, list) {
+      for (var i = 0; i < list.length; i++) {
+        var tag = key + ":" + i;
+        if (state.usedVariants.indexOf(tag) === -1) {
+          state.usedVariants.push(tag);
+          return list[i];
         }
-      } catch (e) {}
-      return [];
+      }
+      return list[state.messages.length % list.length];
     }
 
-    function smartDirectReply(rawQ) {
-      var q = norm(rawQ);
-      var actions = [
-        { label: "Ukázky 3D modelů", href: "https://koukal96.github.io/3D/", external: true, is3d: true },
-        { label: "O mně", href: prefix + "o-mne/index.html" },
-        { label: "Kontakt & přílohy", href: prefix + "kontakt/index.html" }
-      ];
+    // Rich conversational Owl engine (runs offline AND seamlessly backs up Gemini so zero technical error text ever appears!)
+    function craftOwlConversation(raw) {
+      var q = norm(raw);
 
-      if (q.indexOf("jak se mas") !== -1 || q.indexOf("jak se mate") !== -1 || q.indexOf("jak se dari") !== -1) {
+      var haM = q.match(/(\d+(?:[.,]\d+)?)\s*(ha|hektar|m2|m3|m³|tun)/);
+      if (haM) state.hectares = haM[1].replace(",", ".") + " " + haM[2];
+
+      [
+        ["repk", "řepka"], ["psenic", "pšenice"], ["jecmen", "ječmen"],
+        ["kukuric", "kukuřice"], ["chmel", "chmel"], ["mak", "mák"],
+        ["cukrov", "cukrovka"], ["brambor", "brambory"], ["louk", "louky / pastviny"],
+        ["sad", "sad / vinice"], ["les", "lesní porost"]
+      ].forEach(function (pair) {
+        if (q.indexOf(pair[0]) !== -1) state.crop = pair[1];
+      });
+
+      // 1. Natural greetings & small talk
+      if (hasAny(q, ["jak se mas", "jak se mate", "jak se dari", "jak jde zivot", "jak to jde", "co delas", "jak je"])) {
         return {
-          text: "Júú, zdravím! Mám se skvěle – hlídám pole z výšky, kontroluji data a těším se, co dnes vymyslíme. Na jaké téma si popovídáme – kubatury, 3D modely, fotogrammetrie, termovize, NDVI/VRA, nebo kam tě mám na webu nasměrovat?",
-          actions: actions
+          text: pickVariant("how", [
+            "Júú, zdravím! Mám se skvěle – hlídám pole z výšky, kontroluji snímky z dronů a těším se, co spolu vymyslíme. Jak se máš ty? Pojďme se pobavit na téma, které tě zajímá – třeba kubatury, 3D modely staveb, fotogrammetrie, termovize, přesné hnojení NDVI/VRA nebo škody pro pojišťovnu a SZIF.",
+            "Húú, díky za optání! Mám se výborně – baterky nabité, vrtule připravené a přehled o každém hektaru. Povídej, co zrovna řešíš nebo co bys na webu rád našel?"
+          ]),
+          follow: "Když přiložíš fotku místa nebo snímek z katastru, hned se nám to bude i lépe nacenovat.",
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit chat k formuláři", action: "attach" }
+          ]
         };
       }
-      if (q.indexOf("lidar") !== -1) {
+
+      if (/^(ahoj|cau|dobry den|dobry vecer|dobre rano|nazdar|zdar|hu+|ju+|zdravim|cus|hej)\b/.test(q.trim())) {
         return {
-          text: "Klasický letecký LiDAR teď neprovozuji, ale u většiny zadání (kubatury, DMT terén, 3D modely staveb) to dokážeme řešit přesnou fotogrammetrií v PIX4D. Můžeme se domluvit s lidským kolegou Bc. Janem Koukalem (+420 604 353 393).",
-          actions: actions
+          text: pickVariant("hi", [
+            "Júú, zdravím! Húú, já jsem Strážce úrody a létám s drony. Jak mohu pomoci? Povídejme si úplně normálně – zeptej se na kubatury, fotogrammetrii, termovizi, 3D modely, NDVI/VRA nebo kam na stránce přejít.",
+            "Húú, ahoj! Tady sova Strážce úrody. Rád si s tebou popovídám o dronech, polích, lesích i stavbách nebo tě provedu webem. Co zrovna řešíš?"
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Moje služby", target: "#mojesluzby" }
+          ]
         };
       }
-      if (q.indexOf("3d") !== -1 || q.indexOf("model") !== -1 || q.indexOf("fotogram") !== -1 || q.indexOf("kubatur") !== -1) {
+
+      // 2. Same-page & cross-page navigation (stays open + keeps history!)
+      if (hasAny(q, ["o mne", "o me", "o mě", "kdo je jan", "koukal", "vzdel", "praxe"])) {
+        state.topic = "O mně – Bc. Jan Koukal";
         return {
-          text: "Fotogrammetrii, výpočty kubatur i 3D modely staveb, střech a terénu (PIX4D, kategorie A2) dělám. Živé ukázky 3D modelů si můžeš otevřít na koukal96.github.io/3D/ a přiložením snímku z katastru usnadníš nacenění.",
-          actions: actions
+          text: "Za značkou Strážce úrody stojí Bc. Jan Koukal (Loštice, působí po celém Olomouckém kraji i dál) – od dětství u přírody a žní na kombajnu přes lesnickou školu v Hranicích a ČZU v Praze (DPZ a drony) až po precizní zemědělství od roku 2016. Klikni níže pro přechod na stránku O mně (chat i historie zůstanou otevřené).",
+          jumps: [
+            { label: "Otevřít stránku O mně", target: "o-mne/index.html" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
         };
       }
-      if (q.indexOf("termoviz") !== -1 || q.indexOf("zavlah") !== -1) {
+
+      if (hasAny(q, ["kontakt", "formular", "poptavk", "telefon", "volat", "domluv"])) {
+        state.topic = "Kontakt a poptávka";
         return {
-          text: "Termovizi provozuji – termokamerou z dronu odhaluji nerovnoměrné zavlažování, ucpané trysky nebo úniky vody v závlahových rozvodech i anomálie objektů.",
-          actions: actions
+          text: "Můj lidský kolega je Bc. Jan Koukal (+420 604 353 393, info@strazce-urody.cz, Loštice). Můžeš kliknout na „Přiložit k formuláři“ a celý náš rozhovor (včetně případné fotky z katastru) se rovnou vloží do poptávky.",
+          jumps: [
+            { label: "Přiložit chat k formuláři", action: "attach" },
+            { label: "WhatsApp", target: "https://wa.me/420604353393", wa: true }
+          ]
         };
       }
+
+      // 3. 3D models & Photogrammetry & Kubatury (external link opens on click, NEVER unexpected auto-redirect)
+      if (hasAny(q, ["3d", "model", "fotogram", "kubatur", "objem", "skladk", "hromad", "piskovn", "lom", "vykop", "stavb", "strech", "pix4d"])) {
+        state.topic = "3D modely, fotogrammetrie a kubatury";
+        return {
+          text: "Ano, fotogrammetrie, výpočty kubatur (hromady materiálu, štěrk, písek, zemina, výkopy) i 3D modely staveb a terénu (PIX4D, provoz kategorie A2) jsou moje hlavní parketa! Živé ukázky 3D modelů si můžeš otevřít na koukal96.github.io/3D/ a přiložením snímku z katastru usnadníš nacenění i návrh letu.",
+          jumps: [
+            { label: "Ukázky 3D modelů (koukal96.github.io/3D/)", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 4. LiDAR
+      if (hasAny(q, ["lidar", "laserov"])) {
+        state.topic = "LiDAR / fotogrammetrie";
+        return {
+          text: "Na rovinu – klasický letecký LiDAR teď neprovozuji, ale u většiny zakázek (kubatury, digitální model terénu DMT, 3D modely staveb) to dokážeme přesně vyřešit optickou fotogrammetrií v PIX4D. A kdyby byl LiDAR u tvého projektu nezbytný, můžeme se o tom pobavit a najít řešení.",
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit chat k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 5. Thermovision & irrigation
+      if (hasAny(q, ["termoviz", "termokam", "zavlah", "zavlaz", "unik", "vod"])) {
+        state.topic = "Termovize a kontrola závlah";
+        return {
+          text: "Ano, termovizi dělám! Ze vzduchu termokamerou rychle odhalím nerovnoměrné zavlažování na polích, ucpané trysky nebo úniky vody v závlahových rozvodech, a termovizní snímkování využívám i při kontrole objektů.",
+          jumps: [
+            { label: "Ukázky na stránce (Moje služby)", target: "#mojesluzby" },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 6. NDVI, VRA, DMT, SZIF, insurance, forestry
+      if (hasAny(q, ["ndvi", "vra", "hnoj", "variabil", "porost", "pole", "skod", "szif", "pojist", "zver", "kroup", "zaplav", "les", "kurovec", "dmt", "teren", "eroz"])) {
+        state.topic = hasAny(q, ["skod", "szif", "pojist", "zver", "kroup", "zaplav", "les", "kurovec"])
+          ? "Reporty škod (SZIF / pojišťovny) a lesnictví"
+          : "Precizní zemědělství (NDVI, VRA, DMT)";
+        return {
+          text: "S tímhle pomáhám běžně – tvořím multispektrální vegetační mapy (NDVI), aplikační mapy pro variabilní dávkování hnojiv či osiva (VRA), digitální model terénu (DMT) pro závlahy, odvodnění a erozi i přehledné reporty škod pro zemědělce, SZIF a pojišťovny. Když přiložíš obrázek nebo katastr plochy, lépe se to nacení.",
+          jumps: [
+            { label: "Posunout na Moje služby", target: "#mojesluzby" },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 7. Site search / "najít na stránce" (keeps chat open when scrolling to section!)
+      if (hasAny(q, ["najit", "najdu", "kde je", "kde najd", "sluzb", "soupatk", "ukazk"])) {
+        return {
+          text: "Na hlavní stránce najdeš všech 8 služeb, porovnávací šoupátka DMT / NDVI / VRA i video z výšky – klikni na tlačítko níže a posunu stránku přímo na ně (chat zůstane otevřený).",
+          jumps: [
+            { label: "Posunout na Moje služby", target: "#mojesluzby" },
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Stránka O mně", target: "o-mne/index.html" }
+          ]
+        };
+      }
+
+      // 8. Pricing & natural conversational continuation
       return {
-        text: "Húú, jsem Strážce úrody AI! Pomůžu ti s dotazy na letecké práce (fotogrammetrie, kubatury, 3D modely, NDVI/VRA, DMT, termovize, reporty pro SZIF/pojišťovny) i s navigací po webu.",
-        actions: actions
+        text: pickVariant("conv", [
+          "Rozumím! Každý pozemek i stavba mají svá specifika, proto zakázky nacenuji individuálně podle rozsahu, terénu a požadovaného výstupu. Když sem přiložíš fotku nebo snímek z katastru s vyznačeným rozsahem a celý rozhovor přiložíš k formuláři, lidský kolega Bc. Jan Koukal (+420 604 353 393) ti rovnou navrhne přesný postup i cenu.",
+          "Zajímavé téma! Povídej dál – o jakou plochu, stavbu nebo plodinu přesně jde? Kdykoliv pak můžeš kliknout nahoře na „Přiložit k formuláři“ a celý náš chat se přenese do poptávky."
+        ]),
+        jumps: [
+          { label: "Přiložit foto / katastr", action: "upload" },
+          { label: "Přiložit chat k formuláři", action: "attach" },
+          { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true }
+        ]
       };
     }
 
-    freshForm.addEventListener("submit", async function (e) {
+    function renderInitialScreen() {
+      bodyEl.innerHTML = "";
+      renderFilePills();
+      var intro = {
+        role: "bot",
+        text: "Júú, zdravím! Húú, já jsem Strážce úrody a létám s drony. Jak mohu pomoci? Povídejme si úplně přirozeně – o kubaturách, fotogrammetrii, termovizi, 3D modelech, NDVI/VRA nebo kam se na webu podívat. Celý chat můžeš kdykoliv přiložit k formuláři (i po první větě).",
+        jumps: [
+          { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+          { label: "Moje služby", target: "#mojesluzby" },
+          { label: "Přiložit foto / katastr", action: "upload" }
+        ]
+      };
+      renderBubble(intro);
+    }
+
+    if (state.messages && state.messages.length) {
+      bodyEl.innerHTML = "";
+      renderFilePills();
+      state.messages.forEach(function (m) { renderBubble(m); });
+    } else {
+      renderInitialScreen();
+    }
+
+    attachBtn.addEventListener("click", exportToContactForm);
+    mailBtn.addEventListener("click", exportToEmail);
+    resetBtn.addEventListener("click", function () {
+      state = {
+        messages: [],
+        attachments: [],
+        chatOpen: true,
+        attachedToForm: false,
+        topic: null,
+        crop: null,
+        hectares: null,
+        location: null,
+        usedVariants: [],
+        summaryText: ""
+      };
+      writeState(state);
+      renderInitialScreen();
+    });
+
+    if (uploadBtn && fileInput) {
+      uploadBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        fileInput.click();
+      });
+      fileInput.addEventListener("change", async function () {
+        var files = Array.from(fileInput.files || []);
+        if (!files.length) return;
+        for (var i = 0; i < files.length; i++) {
+          var f = files[i];
+          var item = await new Promise(function (res) {
+            if (!f.type.startsWith("image/")) {
+              res({ name: f.name, type: f.type || "file", dataUrl: null });
+              return;
+            }
+            var rd = new FileReader();
+            rd.onload = function (ev) {
+              var im = new Image();
+              im.onload = function () {
+                var maxD = 1280, w = im.width, h = im.height;
+                if (w > maxD || h > maxD) {
+                  if (w > h) { h = Math.round(h * maxD / w); w = maxD; }
+                  else { w = Math.round(w * maxD / h); h = maxD; }
+                }
+                var cv = document.createElement("canvas");
+                cv.width = w; cv.height = h;
+                cv.getContext("2d").drawImage(im, 0, 0, w, h);
+                res({ name: f.name, type: "image/jpeg", dataUrl: cv.toDataURL("image/jpeg", 0.82) });
+              };
+              im.onerror = function () { res({ name: f.name, type: f.type, dataUrl: ev.target.result }); };
+              im.src = ev.target.result;
+            };
+            rd.readAsDataURL(f);
+          });
+          state.attachments.push(item);
+          var um = { role: "user", text: "Přikládám snímek / podklad: " + item.name, imagePreview: item.dataUrl || "", imageName: item.name };
+          state.messages.push(um);
+          renderBubble(um);
+        }
+        fileInput.value = "";
+        renderFilePills();
+        writeState(state);
+
+        var bm = {
+          role: "bot",
+          text: "Skvělé, přiložený obrázek / snímek z katastru mám uložený u našeho rozhovoru! Díky vyznačenému rozsahu se to bude lépe nacenovat a Bc. Jan Koukal hned navrhne postup.",
+          jumps: [
+            { label: "Přiložit chat + přílohu k formuláři", action: "attach" },
+            { label: "Poslat mailem", action: "email" }
+          ]
+        };
+        state.messages.push(bm);
+        writeState(state);
+        renderBubble(bm);
+      });
+    }
+
+    // Handle message submission: try Cloudflare Gemini Worker with short timeout (4.5s),
+    // and if offline / overloaded / error, seamlessly respond via Owl AI WITHOUT showing technical error text!
+    barForm.addEventListener("submit", async function (e) {
       e.preventDefault();
-      var msg = (inputEl.value || "").trim();
-      if (!msg) return;
+      var text = (inputEl.value || "").trim();
+      if (!text) return;
       inputEl.value = "";
 
-      // Remove any leftover typing indicators from other scripts
       bodyEl.querySelectorAll(".ai-typing").forEach(function (el) { el.remove(); });
 
-      appendUserBubble(msg);
-      saveHistoryEntry("user", msg);
+      var uMsg = { role: "user", text: text };
+      state.messages.push(uMsg);
+      state.chatOpen = true;
+      writeState(state);
+      renderBubble(uMsg);
 
       var thinking = document.createElement("div");
       thinking.className = "ai-typing";
@@ -6184,49 +6738,61 @@ document.addEventListener("DOMContentLoaded", function () {
       bodyEl.appendChild(thinking);
       bodyEl.scrollTop = bodyEl.scrollHeight;
 
-      var qInfo = readQuota();
-      var actions = [
-        { label: "Ukázky 3D modelů", href: "https://koukal96.github.io/3D/", external: true, is3d: true },
-        { label: "O mně", href: prefix + "o-mne/index.html" },
-        { label: "Kontakt & přílohy", href: prefix + "kontakt/index.html" }
-      ];
+      var localPlan = craftOwlConversation(text);
+      var quota = readQuota();
+      var isOnline = (typeof navigator === "undefined" || navigator.onLine !== false) && /^https?:/.test(window.location.protocol);
 
-      if (qInfo.count >= DAILY_LIMIT) {
-        if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
-        var repLimit = smartDirectReply(msg);
-        appendBotBubble(repLimit.text, "Dosáhl jsi svého osobního limitu " + DAILY_LIMIT + " AI dotazů na 24 h (obnoví se automaticky).", repLimit.actions);
-        saveHistoryEntry("bot", repLimit.text);
-        return;
-      }
+      if (isOnline && quota.count < DAILY_LIMIT) {
+        try {
+          var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var timer = controller ? setTimeout(function () { controller.abort(); }, 4500) : null;
 
-      try {
-        var resp = await fetch(WORKER_ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: msg, history: getRecentHistory() })
-        });
-        var payload = await resp.json();
-        if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
+          var histPayload = state.messages.slice(-8).map(function (m) {
+            return {
+              role: m.role === "user" ? "user" : "model",
+              text: String(m.text || "").slice(0, 900)
+            };
+          });
 
-        if (resp.ok && payload && typeof payload.reply === "string" && payload.reply.trim()) {
-          bumpQuota();
-          var cleanReply = payload.reply.trim();
-          appendBotBubble(cleanReply, "", actions);
-          saveHistoryEntry("bot", cleanReply);
-        } else {
-          var errDetail = (payload && (payload.details || payload.error)) ? String(payload.details || payload.error) : ("HTTP " + resp.status);
-          var repErr = smartDirectReply(msg);
-          appendBotBubble(repErr.text, "Worker vrátil hlášení (" + errDetail + ") – zkontroluj v Cloudflare u Workeru Secret GEMINI_API_KEY a Deploy.", repErr.actions);
-          saveHistoryEntry("bot", repErr.text);
+          var resp = await fetch(WORKER_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text, history: histPayload }),
+            signal: controller ? controller.signal : undefined
+          });
+          if (timer) clearTimeout(timer);
+
+          var payload = await resp.json();
+          if (resp.ok && payload && typeof payload.reply === "string" && payload.reply.trim()) {
+            if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
+            bumpQuota();
+            var bGemini = {
+              role: "bot",
+              text: payload.reply.trim(),
+              jumps: localPlan.jumps || []
+            };
+            state.messages.push(bGemini);
+            writeState(state);
+            renderBubble(bGemini);
+            return;
+          }
+        } catch (err) {
+          // Silently fall through to seamless Owl response (no ugly error banner!)
         }
-      } catch (netErr) {
-        if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
-        var repNet = smartDirectReply(msg);
-        appendBotBubble(repNet.text, "Spojení na Worker se nepodařilo (zkontroluj síť nebo URL Workeru).", repNet.actions);
-        saveHistoryEntry("bot", repNet.text);
       }
+
+      if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
+      var bFallback = {
+        role: "bot",
+        text: localPlan.text,
+        follow: localPlan.follow || "",
+        jumps: localPlan.jumps || []
+      };
+      state.messages.push(bFallback);
+      writeState(state);
+      renderBubble(bFallback);
     });
-  }, 950);
+  }, 650);
 });
 </script>
 
