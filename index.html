@@ -7433,4 +7433,55 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<script id="v28-instant-worker-healthcheck">
+document.addEventListener("DOMContentLoaded", function () {
+  var WORKER_ENDPOINT = "https://strazzce-urody-sova-ai.jan-koukal96.workers.dev";
+  var DIAG_KEY = "strazce_urody_live_ai_status_v28";
+
+  // Ping Worker immediately on page load so header status reflects real Worker/Gemini availability right away
+  // and wake up the Worker before the user even sends their first message!
+  setTimeout(function () {
+    var subEl = document.querySelector(".ai-owl-badge span");
+    if (!subEl) return;
+
+    function updateStatus(mode, detail) {
+      try { sessionStorage.setItem(DIAG_KEY, mode); } catch (e) {}
+      if (mode === "gemini") {
+        subEl.textContent = "🟢 Gemini AI online · Drony, data & 3D modely";
+      } else if (mode === "checking") {
+        subEl.textContent = "⏳ Ověřuji spojení na Gemini AI...";
+      } else {
+        subEl.textContent = detail ? ("🦉 Sova AI (" + detail + ")") : "🦉 Sova AI připravena · Drony, data & 3D modely";
+      }
+    }
+
+    if (!/^https?:/.test(window.location.protocol)) {
+      updateStatus("local", "lokální soubor");
+      return;
+    }
+
+    updateStatus("checking");
+    fetch(WORKER_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: "Ahoj, krátký test spojení – odpověz jedním slovem: Připravena." })
+    })
+      .then(async function (res) {
+        var data = null;
+        try { data = await res.json(); } catch (e) {}
+        if (res.ok && data && data.reply) {
+          updateStatus("gemini");
+        } else {
+          var reason = (data && (data.error || data.details)) ? String(data.error || data.details).slice(0, 38) : ("HTTP " + res.status);
+          updateStatus("local", reason);
+        }
+      })
+      .catch(function () {
+        updateStatus("local", "Worker nedostupný");
+      });
+  }, 1450);
+});
+</script>
+
 </body></html>
