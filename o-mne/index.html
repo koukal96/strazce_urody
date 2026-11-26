@@ -6699,4 +6699,467 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<style id="v26-owl-humor-polish">
+  /* Clean subtle humor badge / mood tag inside owl header & smoother message spacing */
+  .ai-owl-badge span {
+    display: block;
+    font-size: 11.5px;
+    opacity: 0.92;
+  }
+  .ai-bubble-msg.bot {
+    white-space: pre-line;
+  }
+</style>
+
+<script id="v26-pro-owl-engine">
+document.addEventListener("DOMContentLoaded", function () {
+  var WORKER_ENDPOINT = "https://strazzce-urody-sova-ai.jan-koukal96.workers.dev";
+  var STATE_KEY = "strazce_urody_owl_master_v25";
+  var QUOTA_KEY = "strazce_urody_gemini_quota_v26";
+  var DAILY_LIMIT = 25;
+  var DAY_MS = 24 * 60 * 60 * 1000;
+  var MODELS_3D_URL = "https://koukal96.github.io/3D/";
+
+  var isSubpage = /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.pathname) || /\/(o-mne|kontakt|obchodni-podminky|ochrana-osobnich-udaju|cookies)\//.test(window.location.href);
+  var rootRel = isSubpage ? "../" : "";
+
+  function readState() {
+    var def = {
+      messages: [],
+      attachments: [],
+      chatOpen: false,
+      attachedToForm: false,
+      topic: null,
+      crop: null,
+      hectares: null,
+      location: null,
+      usedVariants: [],
+      summaryText: ""
+    };
+    try {
+      var raw = sessionStorage.getItem(STATE_KEY) || localStorage.getItem(STATE_KEY);
+      if (raw) {
+        var p = JSON.parse(raw);
+        if (p && typeof p === "object") return Object.assign(def, p);
+      }
+    } catch (e) {}
+    return def;
+  }
+
+  function buildSummary(st) {
+    var lines = [];
+    lines.push("=== ZÁPIS Z KONVERZACE · STRÁŽCE ÚRODY AI (SOVIČKA) ===");
+    if (st.topic) lines.push("Téma / služba: " + st.topic);
+    if (st.crop) lines.push("Plodina / objekt: " + st.crop);
+    if (st.hectares) lines.push("Výměra / rozsah: " + st.hectares);
+    if (st.location) lines.push("Lokalita: " + st.location);
+    if (st.attachments && st.attachments.length) {
+      lines.push("Přiložené snímky / katastr (" + st.attachments.length + "): " + st.attachments.map(function (a) { return a.name; }).join(", "));
+    }
+    lines.push("");
+    lines.push("Přepis rozhovoru:");
+    (st.messages || []).forEach(function (m) {
+      if (m.role === "user") lines.push("• Zákazník: " + m.text);
+      else if (m.role === "bot") lines.push("• Sovička AI: " + m.text);
+    });
+    return lines.join("\n");
+  }
+
+  function writeState(st) {
+    st.summaryText = buildSummary(st);
+    try {
+      var serialized = JSON.stringify(st);
+      sessionStorage.setItem(STATE_KEY, serialized);
+      localStorage.setItem(STATE_KEY, serialized);
+    } catch (e) {}
+  }
+
+  function readQuota() {
+    var now = Date.now();
+    var def = { count: 0, resetAt: now + DAY_MS };
+    try {
+      var raw = localStorage.getItem(QUOTA_KEY);
+      if (raw) {
+        var p = JSON.parse(raw);
+        if (p && typeof p.resetAt === "number" && now < p.resetAt) {
+          return { count: Number(p.count) || 0, resetAt: p.resetAt };
+        }
+      }
+      localStorage.setItem(QUOTA_KEY, JSON.stringify(def));
+    } catch (e) {}
+    return def;
+  }
+
+  function bumpQuota() {
+    var q = readQuota();
+    q.count += 1;
+    try { localStorage.setItem(QUOTA_KEY, JSON.stringify(q)); } catch (e) {}
+    return q;
+  }
+
+  setTimeout(function () {
+    var bodyEl = document.getElementById("ai-chat-body");
+    var barForm = document.getElementById("ai-chat-bar");
+    var inputEl = document.getElementById("ai-chat-field");
+    var fileInput = document.getElementById("ai-chat-file-input");
+    if (!bodyEl || !barForm || !inputEl) return;
+
+    var state = readState();
+
+    function norm(s) {
+      return (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+    function hasAny(q, arr) {
+      for (var i = 0; i < arr.length; i++) {
+        if (q.indexOf(arr[i]) !== -1) return true;
+      }
+      return false;
+    }
+
+    function navigatePreservingChat(target) {
+      if (!target) return;
+      state.chatOpen = true;
+      writeState(state);
+      if (target.indexOf("http") === 0) {
+        window.open(target, "_blank", "noopener,noreferrer");
+        return;
+      }
+      if (target.indexOf("#") === 0) {
+        var el = document.querySelector(target);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          return;
+        }
+        window.location.href = rootRel + "index.html" + target;
+        return;
+      }
+      window.location.href = rootRel + target;
+    }
+
+    function appendBubble(msgObj) {
+      var div = document.createElement("div");
+      div.className = "ai-bubble-msg " + (msgObj.role === "user" ? "user" : "bot");
+      div.textContent = msgObj.text;
+
+      if (msgObj.imagePreview) {
+        var img = document.createElement("img");
+        img.src = msgObj.imagePreview;
+        img.alt = msgObj.imageName || "Příloha";
+        img.className = "ai-msg-thumb";
+        div.appendChild(img);
+      }
+
+      if (msgObj.jumps && msgObj.jumps.length) {
+        var row = document.createElement("div");
+        row.className = "ai-actions-row";
+        msgObj.jumps.forEach(function (j) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "ai-jump-link" + (j.wa ? " is-wa" : "") + (j.is3d ? " is-3d" : "");
+          b.textContent = j.label;
+          b.addEventListener("click", function () {
+            if (j.action === "attach") {
+              var attBtn = document.getElementById("ai-attach-form-btn");
+              if (attBtn) attBtn.click();
+            } else if (j.action === "email") {
+              var mailBtn = document.getElementById("ai-send-mail-btn");
+              if (mailBtn) mailBtn.click();
+            } else if (j.action === "upload") {
+              if (fileInput) fileInput.click();
+            } else {
+              navigatePreservingChat(j.target);
+            }
+          });
+          row.appendChild(b);
+        });
+        div.appendChild(row);
+      }
+
+      if (msgObj.follow) {
+        var fu = document.createElement("div");
+        fu.className = "ai-followup-note";
+        fu.textContent = msgObj.follow;
+        div.appendChild(fu);
+      }
+
+      bodyEl.appendChild(div);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    }
+
+    function pickVariant(key, list) {
+      if (!Array.isArray(state.usedVariants)) state.usedVariants = [];
+      for (var i = 0; i < list.length; i++) {
+        var tag = key + ":" + i;
+        if (state.usedVariants.indexOf(tag) === -1) {
+          state.usedVariants.push(tag);
+          return list[i];
+        }
+      }
+      return list[(state.messages.length + Math.floor(Math.random() * list.length)) % list.length];
+    }
+
+    // Detect competitor inquiries -> polite, witty owl boundary + recommend checking internet / contacting Jan
+    function isCompetitorQuestion(q) {
+      return hasAny(q, [
+        "konkurenc", "jine firmy", "jina firma", "jini dron", "kdo jeste dela",
+        "levnejsi firma", "srovnani firem", "srovnej firmy", "kdo je lepsi nez",
+        "jiny dodavatel", "jini dodavatele"
+      ]);
+    }
+
+    // Smart, funny, on-topic Owl engine that never answers off-the-wall nonsense!
+    function craftSmartOwlResponse(raw) {
+      var q = norm(raw);
+
+      var haM = q.match(/(\d+(?:[.,]\d+)?)\s*(ha|hektar|m2|m3|m³|tun)/);
+      if (haM) state.hectares = haM[1].replace(",", ".") + " " + haM[2];
+
+      [
+        ["repk", "řepka"], ["psenic", "pšenice"], ["jecmen", "ječmen"],
+        ["kukuric", "kukuřice"], ["chmel", "chmel"], ["mak", "mák"],
+        ["cukrov", "cukrovka"], ["brambor", "brambory"], ["louk", "louky / pastviny"],
+        ["sad", "sad / vinice"], ["les", "lesní porost"]
+      ].forEach(function (pair) {
+        if (q.indexOf(pair[0]) !== -1) state.crop = pair[1];
+      });
+
+      // 1. Competitor questions -> witty owl boundary
+      if (isCompetitorQuestion(q)) {
+        return {
+          text: pickVariant("comp", [
+            "Húú, tady sova sklápí zobák 🦉😉 Hele, tohle ti nemohu říct – předně koukni na internet nebo na toto neumím odpovědět. Já hlídám naše pole, data a 3D modely, ale cizí firmy ti hodnotit nebudu! Pokud tě zajímá, co umíme my, rád ti povím všechno.",
+            "Mrkám jedním velkým sovím okem 👀🦉 Hele, tohle ti nemohu říct – předně koukni na internet nebo na toto neumím odpovědět. Co se ale týká našich dronů, kubatur, NDVI/VRA, termovize a 3D modelů, tam jsem doma jako sova v koruně stromu!"
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Moje služby", target: "#mojesluzby" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 2. Direct question about Strážce úrody ("co je / kdo je / řekni mi něco o strážci úrody")
+      if (hasAny(q, ["o strazci urody", "strazce urody", "co dela", "co umis", "co vsechno", "kdo jsi", "kdo je jan"])) {
+        state.topic = "Strážce úrody – služby a příběh";
+        return {
+          text: pickVariant("about_su", [
+            "Húú, rád povím! 🦉🌿 Strážce úrody je značka Bc. Jana Koukala (Loštice, Olomoucký kraj), kde propojujeme drony, přesná data a selský rozum – bez zbytečné teorie. Umíme letecké snímkování, výpočty kubatur, 3D modely staveb a terénu v PIX4D (ukázky máš na koukal96.github.io/3D/), vegetační mapy NDVI, variabilní hnojení VRA, digitální model terénu DMT, kontrolu závlah termokamerou i podklady a reporty škod pro zemědělce, SZIF a pojišťovny. (Klasický LiDAR teď nelétáme, ale fotogrammetrie většinu úloh zvládne parádně!)",
+            "Júú, to je moje oblíbené téma! 🦉✨ Strážce úrody hlídá úrodu, porosty i terén z ptačí perspektivy. Za projektem stojí Bc. Jan Koukal – od žní na kombajnu a lesnické školy přes studium na ČZU až po drony a precizní data. Ať řešíš hromadu štěrku, závlahy, kondici porostu nebo škody po zvěři či vodě, navedu tě dál nebo ti rovnou pomůžu sepsat podklad pro Honzu."
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Stránka O mně", target: "o-mne/index.html" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 3. Greetings & playful owl banter
+      if (hasAny(q, ["jak se mas", "jak se mate", "jak se dari", "jak jde zivot", "jak to jde", "jak je"])) {
+        return {
+          text: pickVariant("how_fun", [
+            "Júú, zdravím! 🦉☕ Mám se skvěle – peří načechrané, vrtule v pozoru a na rozdíl od holubů na náměstí mám i plán, kam letím! Jak se máš ty? Povídej, co dnes vymyslíme – kubatury, 3D modely, termovize, NDVI/VRA nebo ti mám něco najít na webu?",
+            "Húú, díky za optání! 🦉🌿 Mám se báječně – přehled z výšky je prostě k nezaplacení, žádné šlapání do bláta a ještě si u toho ušetřím hlasivky. Na jaké téma si dneska popovídáme?"
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Moje služby", target: "#mojesluzby" }
+          ]
+        };
+      }
+
+      if (/^(ahoj|cau|dobry den|dobry vecer|dobre rano|nazdar|zdar|hu+|ju+|zdravim|cus|hej)\b/.test(q.trim())) {
+        return {
+          text: pickVariant("hi_fun", [
+            "Júú, ahoj! 🦉👋 Tady Sova Strážce úrody – tvůj okřídlený průvodce světem dronů, map, 3D modelů a dat z terénu. Co tě dnes přivádí? Můžeme si popovídat o zakázce, kouknout na 3D modely nebo přenést náš chat rovnou do poptávkového formuláře!",
+            "Húú, nazdar! 🦉✨ Sova na drátě (teda spíš na větvi s kamerou). Zeptej se klidně na kubatury, fotogrammetrii, termovizi, NDVI/VRA, DMT nebo kam na webu přejít."
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Moje služby", target: "#mojesluzby" }
+          ]
+        };
+      }
+
+      // 4. Jokes / humor request
+      if (hasAny(q, ["vtip", "srand", "hlask", "zasmej", "zavtipk", "legrace"])) {
+        return {
+          text: pickVariant("joke", [
+            "Tak jeden soví ze života: Proč má sova na poli nejlepší přehled? Protože vidí, co se šustne, otočí hlavou skoro dokola a nikdy nepotřebuje navigaci z devadesátek! 🦉😄 A když k tomu přidáme dron a PIX4D, vidíme i to, co by okem zůstalo skryté.",
+            "Jedna z provozu: Kolik sovích očí je potřeba ke kontrole závlah? Stačí dvě velká – ale s termokamerou z dronu hned vidíš, kde voda teče, kde stojí a kde tryska stávkuje! 🦉💧😄"
+          ]),
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 5. 3D models, photogrammetry, kubatury
+      if (hasAny(q, ["3d", "model", "fotogram", "kubatur", "objem", "skladk", "hromad", "piskovn", "lom", "vykop", "stavb", "strech", "pix4d"])) {
+        state.topic = "3D modely, fotogrammetrie a kubatury";
+        return {
+          text: "Přesně tak! 📐🚁 Fotogrammetrie, výpočty kubatur (hromady materiálu, výkopy, lomy, pískovny) i 3D modely staveb, střech a terénu v PIX4D (provoz kategorie A2) patří mezi naše hlavní služby. Živé 3D ukázky si můžeš prohlédnout na koukal96.github.io/3D/ a přiložením snímku z katastru usnadníš nacenění.",
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 6. LiDAR
+      if (hasAny(q, ["lidar", "laserov"])) {
+        state.topic = "LiDAR / fotogrammetrie";
+        return {
+          text: "Na rovinu jako sova na větvi 🦉: klasický letecký LiDAR teď neprovozujeme, ale u většiny úloh (kubatury, digitální model terénu DMT, 3D modely staveb) to dokážeme výborně řešit fotogrammetrií v PIX4D. Kdyby byl LiDAR u tvého zadání nutný, můžeme to probrat s Bc. Janem Koukalem (+420 604 353 393).",
+          jumps: [
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 7. Thermovision & irrigation
+      if (hasAny(q, ["termoviz", "termokam", "zavlah", "zavlaz", "unik", "vod"])) {
+        state.topic = "Termovize a kontrola závlah";
+        return {
+          text: "Termokameru z dronu pouštíme do akce rádi! 🌡️💧 Odhalíme nerovnoměrné zavlažování, ucpané trysky nebo úniky vody v závlahách i teplotní anomálie u objektů. Přilož fotku nebo snímek z katastru a pomůžeme ti to lépe nacenit.",
+          jumps: [
+            { label: "Moje služby", target: "#mojesluzby" },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 8. NDVI, VRA, DMT, damages SZIF/insurance, forestry
+      if (hasAny(q, ["ndvi", "vra", "hnoj", "variabil", "porost", "pole", "skod", "szif", "pojist", "zver", "kroup", "zaplav", "les", "kurovec", "dmt", "teren", "eroz"])) {
+        state.topic = hasAny(q, ["skod", "szif", "pojist", "zver", "kroup", "zaplav", "les", "kurovec"])
+          ? "Reporty škod (SZIF / pojišťovny) a lesnictví"
+          : "Precizní zemědělství (NDVI, VRA, DMT)";
+        return {
+          text: "S tímhle pomůžeme! 🌱📊 Tvoříme vegetační mapy NDVI, aplikační mapy pro variabilní hnojení (VRA), digitální model terénu (DMT) i podklady a reporty škod pro zemědělce, SZIF a pojišťovny. Když přiložíš snímek z katastru nebo fotku pozemku, snáz se navrhne postup i cena.",
+          jumps: [
+            { label: "Moje služby", target: "#mojesluzby" },
+            { label: "Přiložit foto / katastr", action: "upload" },
+            { label: "Přiložit k formuláři", action: "attach" }
+          ]
+        };
+      }
+
+      // 9. Navigation / finding something on the site
+      if (hasAny(q, ["najit", "najdu", "kde je", "kde najd", "sluzb", "soupatk", "ukazk", "o mne", "kontakt"])) {
+        return {
+          text: "Rád tě navedu po webu – mrkni na tlačítka níže, chat i historie zůstanou otevřené! 🦉🗺️",
+          jumps: [
+            { label: "Moje služby", target: "#mojesluzby" },
+            { label: "O mně", target: "o-mne/index.html" },
+            { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true }
+          ]
+        };
+      }
+
+      // 10. Grounded fallback when a question is outside our documented domain
+      return {
+        text: pickVariant("honest_fb", [
+          "Húú, na toto neumím spolehlivě odpovědět 🦉 – předně koukni na internet nebo se ozvi přímo mému lidskému kolegovi Bc. Janu Koukalovi (+420 604 353 393, info@strazce-urody.cz). Pokud ale řešíš drony, fotogrammetrii, kubatury, 3D modely, NDVI/VRA, DMT, termovizi nebo škody na porostech, povídej dál!",
+          "Mrkám a přiznávám bez mučení 🦉: na tohle neumím odpovědět, raději koukni na internet nebo napiš Janovi na info@strazce-urody.cz. U našich dronových služeb a mapování porostů či terénu ti ale rád poradím!"
+        ]),
+        jumps: [
+          { label: "Přiložit k formuláři", action: "attach" },
+          { label: "Ukázky 3D modelů", target: MODELS_3D_URL, is3d: true },
+          { label: "WhatsApp", target: "https://wa.me/420604353393", wa: true }
+        ]
+      };
+    }
+
+    // Replace submit handler cleanly so competitor questions & off-topic questions stay strictly truthful and witty
+    var cleanForm = barForm.cloneNode(true);
+    barForm.parentNode.replaceChild(cleanForm, barForm);
+    var cleanInput = cleanForm.querySelector("input");
+    if (!cleanInput) return;
+
+    cleanForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var text = (cleanInput.value || "").trim();
+      if (!text) return;
+      cleanInput.value = "";
+
+      bodyEl.querySelectorAll(".ai-typing").forEach(function (el) { el.remove(); });
+
+      var uMsg = { role: "user", text: text };
+      state.messages.push(uMsg);
+      state.chatOpen = true;
+      writeState(state);
+      appendBubble(uMsg);
+
+      var qNorm = norm(text);
+      // If user asks about competitors, answer immediately with the exact boundary rule without calling external model
+      if (isCompetitorQuestion(qNorm)) {
+        var compRep = craftSmartOwlResponse(text);
+        var bComp = { role: "bot", text: compRep.text, jumps: compRep.jumps };
+        state.messages.push(bComp);
+        writeState(state);
+        appendBubble(bComp);
+        return;
+      }
+
+      var thinking = document.createElement("div");
+      thinking.className = "ai-typing";
+      thinking.textContent = "Sovička přemýšlí...";
+      bodyEl.appendChild(thinking);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      var localPlan = craftSmartOwlResponse(text);
+      var quota = readQuota();
+      var isOnline = (typeof navigator === "undefined" || navigator.onLine !== false) && /^https?:/.test(window.location.protocol);
+
+      if (isOnline && quota.count < DAILY_LIMIT) {
+        try {
+          var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+          var timer = controller ? setTimeout(function () { controller.abort(); }, 10000) : null;
+
+          var histPayload = state.messages.slice(-8).map(function (m) {
+            return {
+              role: m.role === "user" ? "user" : "model",
+              text: String(m.text || "").slice(0, 900)
+            };
+          });
+
+          var resp = await fetch(WORKER_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text, history: histPayload }),
+            signal: controller ? controller.signal : undefined
+          });
+          if (timer) clearTimeout(timer);
+
+          var payload = await resp.json();
+          if (resp.ok && payload && typeof payload.reply === "string" && payload.reply.trim()) {
+            if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
+            bumpQuota();
+            var bAi = { role: "bot", text: payload.reply.trim(), jumps: localPlan.jumps || [] };
+            state.messages.push(bAi);
+            writeState(state);
+            appendBubble(bAi);
+            return;
+          }
+        } catch (err) {
+          // Fall through cleanly to smart Owl response without error text
+        }
+      }
+
+      if (thinking.parentNode) thinking.parentNode.removeChild(thinking);
+      var bLocal = { role: "bot", text: localPlan.text, follow: localPlan.follow || "", jumps: localPlan.jumps || [] };
+      state.messages.push(bLocal);
+      writeState(state);
+      appendBubble(bLocal);
+    });
+  }, 1050);
+});
+</script>
+
 </body></html>
