@@ -7321,4 +7321,116 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<style id="v27-phone-tablet-layout-fixes">
+  /* Prevent horizontal scroll on phones & tablets so nothing gets clipped on right edge */
+  html, body {
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  @media (max-width: 900px) {
+    /* 1. Center cards, sections & headings cleanly on phone/tablet */
+    section, .framer-72ruuk, .framer-4oqmjw, .framer-1o5k53d, .framer-1138g77 {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* 2. Shrink oversized carousel < and > buttons on mobile so they don't look gigantic over photos */
+    button[aria-label="Previous"],
+    button[aria-label="Next"],
+    [class*="arrow"],
+    [data-framer-name*="Arrow"] button,
+    [data-framer-name*="arrow"] button {
+      width: 34px !important;
+      height: 34px !important;
+      min-width: 34px !important;
+      min-height: 34px !important;
+      font-size: 16px !important;
+    }
+
+    /* 3. Fix "Z výšky k lepším výnosům" heading so it doesn't collide or clip at right edge on mobile */
+    .framer-ony9nl {
+      position: relative !important;
+      width: 100% !important;
+      padding: 12px 16px 8px 16px !important;
+      box-sizing: border-box !important;
+      text-align: center !important;
+    }
+    .framer-ony9nl h1.framer-text,
+    .framer-eutcze h1.framer-text {
+      font-size: clamp(24px, 6.5vw, 34px) !important;
+      line-height: 1.15 !important;
+      color: #004300 !important;
+      text-align: center !important;
+      word-break: break-word !important;
+      white-space: normal !important;
+    }
+
+    /* 4. Center "Ukázky získaných informací" & section headings cleanly with breathing room */
+    h1.framer-text, h2.framer-text, h3.framer-text {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-wrap: break-word !important;
+    }
+
+    /* 5. Compact, non-intrusive floating SOVA AI & phone buttons on mobile */
+    .floating-actions-wrap {
+      right: 12px !important;
+      bottom: 76px !important;
+      gap: 8px !important;
+    }
+    .ai-chat-bubble {
+      width: 50px !important;
+      height: 50px !important;
+    }
+    .wa-phone-bubble {
+      width: 44px !important;
+      height: 44px !important;
+    }
+  }
+</style>
+
+<script id="v27-live-gemini-diagnostics">
+document.addEventListener("DOMContentLoaded", function () {
+  var WORKER_ENDPOINT = "https://strazzce-urody-sova-ai.jan-koukal96.workers.dev";
+  var DIAG_KEY = "strazce_urody_live_ai_status_v27";
+
+  // Helper to show a small, non-intrusive status badge inside the Owl header so you know whether reply came from LIVE GEMINI or OFFLINE/LOCAL OWL
+  setTimeout(function () {
+    var subEl = document.querySelector(".ai-owl-badge span");
+    if (!subEl) return;
+
+    function setBadge(mode) {
+      try { sessionStorage.setItem(DIAG_KEY, mode); } catch (e) {}
+      if (mode === "gemini") {
+        subEl.textContent = "🟢 Gemini AI online · Drony, data & 3D modely";
+      } else {
+        subEl.textContent = "🦉 Sova AI připravena · Drony, data & 3D modely";
+      }
+    }
+
+    var savedMode = null;
+    try { savedMode = sessionStorage.getItem(DIAG_KEY); } catch (e) {}
+    if (savedMode) setBadge(savedMode);
+    else setBadge("local");
+
+    // Wrap fetch briefly to detect successful Gemini Worker responses
+    if (typeof window.fetch === "function" && !window.__sovaFetchWrappedV27) {
+      window.__sovaFetchWrappedV27 = true;
+      var origFetch = window.fetch.bind(window);
+      window.fetch = async function (input, init) {
+        var urlStr = typeof input === "string" ? input : (input && input.url ? input.url : "");
+        var res = await origFetch(input, init);
+        if (urlStr.indexOf("strazzce-urody-sova-ai") !== -1) {
+          if (res.ok) setBadge("gemini");
+          else setBadge("local");
+        }
+        return res;
+      };
+    }
+  }, 1200);
+});
+</script>
+
 </body></html>
