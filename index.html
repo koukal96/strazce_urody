@@ -6970,7 +6970,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (resp.ok && payload && typeof payload.reply === "string" && payload.reply.trim()) {
             if (typing.parentNode) typing.parentNode.removeChild(typing);
             bumpQuota();
-            if (statusEl) statusEl.textContent = "Gemini 3.5 Flash Lite online · Drony & 3D";
+            if (statusEl) statusEl.textContent = "Soví asistent Strážce úrody je připraven čelit Vašim otázkám";
             var bAi = { role: "bot", text: payload.reply.trim(), jumps: localPlan.jumps || [] };
             state.messages.push(bAi);
             saveState(state);
